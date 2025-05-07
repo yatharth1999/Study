@@ -1,0 +1,518 @@
+<html lang="en">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="js/alarm.js"></script>
+<title>NAT VS RAFT</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/format.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<audio id="alarm" src="http://soundbible.com/grab.php?id=1766&type=mp3"></audio>
+
+<style>
+    /* Custom navigation bar styling */
+    .custom-nav {
+        display: flex;
+        justify-content: space-around;
+        background-color: #333;
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .custom-nav a {
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-weight: bold;
+        position: relative;
+    }
+
+    .custom-nav a:hover {
+        background-color: #575757;
+        border-radius: 5px;
+    }
+
+    .current-section {
+        background-color: #00bcd4; /* Soft teal color */
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    /* Subtitle styling */
+    .custom-nav a::after {
+        content: attr(data-subtitle); /* Get subtitle from data attribute */
+        display: block;
+        font-size: 0.8em;
+        color: #bfbfbf; /* Light gray color for subtitle */
+        margin-top: 5px;
+    }
+
+    body {
+        padding-top: 60px; /* To prevent content from being hidden under the navbar */
+    }
+</style>
+
+
+
+<body onload="setAllLinks()">
+<div class="custom-nav">
+    <a href="#Name" id="nav-name" data-subtitle="Enter your name">1/10 Name Entry</a>
+    <a href="#Consent" id="nav-consent" data-subtitle="Give consent">2/10 Consent</a>
+    <a href="#Demographics" id="nav-demographics" data-subtitle="Personal info">3/10 Demographics</a>
+    <a href="#Rules" id="nav-rules" data-subtitle="Study rules">4/10 Overview</a>
+    <a href="#Pretest" id="nav-pretest" data-subtitle="Initial test (15 min)">5/10 Pretest</a>
+    <a href="#Training1" id="nav-training1" data-subtitle="First training session (15 min)">6/10 Training 1</a>
+    <a href="#Usability" id="nav-usability" data-subtitle="Feedback survey">7/10 Learning Survey</a>
+    <a href="#Posttest" id="nav-posttest" data-subtitle="Final test (15 min)">8/10 Posttest</a>
+    <a href="#Training2" id="nav-training2" data-subtitle="Second training session (15 min)">9/10 Training 2</a>
+    <a href="#Comparison1" id="nav-comparison1" data-subtitle="Compare results">10/10 Comparison</a>
+</div>
+<div class ="box">
+
+    <h1>Study</h1>
+    <div class = "redbox", id="redbox">
+        <p>Yellow</p>
+    </div>
+
+    <div class = "bluebox", id="bluebox">
+        <p>Blue</p>
+    </div>
+
+
+
+
+
+
+<!-- First Page - Student Login -->
+    <section class="Name", id="Name">
+        <p>Please enter the case-sensitive username/alias given to you in the entry field below, <br />
+            and then press the <q>Submit Name</q> button.</p>
+        <p><form onsubmit="event.preventDefault(); checkUser('username', 'invalid', 'Name', 'Consent');">
+        <div class="form-group">
+            <label for="username">Username/Alias:</label>
+            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username">
+        </div>
+    </form> </p>
+        <p><span class="invalid", id="invalid">Invalid username/alias.</span></p>
+        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent');"> Submit Name</button>
+    </section>
+<!-- end -->
+
+
+
+<!-- Quiz 1 -->
+<!-- Consent Form Page -->
+    <section class="Consent", id="Consent">
+        <p>Your username: <b><span class="username-display"></span></b></p>
+        <p>Provide consent by reading and filling out the consent form using the link below.</p>
+<!--        <p>Note that your username/alias has already been filled out.</p>-->
+        <p>   <a class="consent-link" target="_blank">Consent Form (1 Question)</a></p>
+        <p>Once you've filled it out and submitted your consent, you can come back here, <br />
+            then, and only then, click the button below to move on. </p>
+        <p style="color: #d32f2f; background-color: #ffebee; padding: 10px; border-radius: 5px;">
+            The study will take approximately <b> 90 minutes</b>.
+        </p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Consent','Demographics');"> Next (2/10)</button>
+    </section>
+<!-- end -->
+
+
+
+
+<!-- Quiz 2 -->
+<!-- Demographic Page -->
+    <section class="Demographics", id="Demographics">
+        <p>Your username: <b><span class="username-display"></span></b></p>
+        <p>Tell us a little about yourself</p>
+        <p>   <a class="demograph" , target="_blank">Demographics Survey (6 Questions)</a></p>
+        <p>After you submit the above form, click the <q>Next</q> button below to continue </p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Demographics', 'Consent', true);  ">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Demographics','Rules'); startTimer(20, 'timer');">Next (3/10) </button>
+    </section>
+<!-- end -->
+ 
+    
+    <!-- Rules Page -->
+    <section class="Rules", id="Rules">
+        <p id="timer"> 10:00 </p>
+        <p>
+            Start by taking a few minutes to learn about the 
+            nautical rules of the road. The link below takes you to a PDF guide to teach you about ship lighting at night. This knowledge helps you figure out a vessel's orientation (target angle) with respect to your ship at night - when it is difficult to see the vessel.
+
+        </p>
+        <p>   <a href="https://www.cse.unr.edu/~korbend/study1/rules_guide.pdf", target="_blank">Abbreviated Guide To Navigation Rules Of The Road (5 Minutes)</a></p>
+        <p>
+            Next, go through the video tutorial below. The tutorial provides an outline of our study, explains important marine terminology, and describes the three nautical rules of the road that determine who has the right of way and what action to take when there is a risk of collision at sea.</p>
+        <p>   <a href="https://docs.google.com/presentation/d/1vlvqnaKCcHe1fFUXnELPH8XVrBuZh62Lc_h_nDvBOm8/edit?usp=sharing", target="_blank">Rules of the Road (Slides) (5 Minutes)</a></p> 
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <br>
+        <br>
+        <p> Finally, the video tutorial below shows you how to use the simulation trainer. It is only a couple of minutes long.</p>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+        <p>
+            You can go through it all within the maximum of 10
+            minutes, but you may finish earlier. Then click on
+            the <q>Next</q> button below to move on. </p>
+
+        <button type="button" class="btn btn-primary" onclick="nextSection('Rules','Demographics', true); stopTimer();  ">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Rules','Pretest'); stopTimer();"> Next (4/10)</button>
+    </section>
+
+<!-- end -->
+
+
+
+
+
+
+<!-- Quiz 3 -->
+<!-- Pretest Page -->
+    <section class="Pretest" , id="Pretest">
+        <p>
+            You will now take a Pre-Test quiz! Before starting, note the following requirements:
+        </p>
+        
+        <p>1. Launch the NavyTac App from your desktop <br />
+            2. Enter your assigned case-sensitive username/alias <br />
+            3. Use access code: <b>PRTX</b>
+        </p>
+        <p>Your username: <b><span class="username-display"></span></b></p>
+    
+        <p><b>Important:</b> Ensure you enter correct access code  <b>PRTX</b> when starting the application</p>
+    
+        <p>
+            A 15-minute countdown timer will automatically begin when the quiz starts.<br>
+            Try to complete all questions within the time limit.
+        </p>
+        <p>
+            <br/> If you experience any issues:<br />
+            1. Verify you used Correct access code <b>PRTX</b><br/>
+            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
+            3. If problems persist, alert a researcher
+        </p>
+       
+        <p>
+            When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage.
+        </p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); startTimer(10, 'timer');">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false);"> Next (5/10) </button>
+    </section>
+
+<!-- end -->
+
+
+<!-- TRAINING START  -->
+<!-- Quiz 4 -->
+<!-- Training 1 : Yellow Non Adaptive  -->
+    <section class="Training1" , id="Training1">
+        <p>
+            You have been assigned the <b>YELLOW</b> group. <br />
+        </p>
+        <p>
+            In this phase of the study, you have 15 minutes to learn more about the naval tactical maneuvering in simulated environments. Before you begin, you will need to:
+        </p>
+        <p>1. Open the NavyTac App on your desktop <br />
+            2. Enter your assigned username/alias <br />
+            3. When asked for an access code, use: <b>NATN</b> <br />
+            A timer will be available to help you track your 15-minute session.
+        </p>
+                <p>Your username: <b><span class="username-display"></span></b></p>  
+        <p><b>Important:</b> Ensure you use the access code <b>NATN</b> when prompted during launch</p>
+        <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+                <p>
+                    <br/> If you experience any issues:<br />
+                    1. Verify you used Correct access code <b>NATN</b><br/>
+                    2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
+                    3. If problems persist, alert a researcher
+                </p>
+        <p>
+            When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage. If you experience any issues:<br />
+        </p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true);">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability');">Next (6/10)</button>
+    </section>
+<!-- end -->
+
+
+
+
+
+<!-- Training 2 : Blue Adaptive Training  -->
+    <section class="Training2" , id="Training2">
+        <p>
+            You have been assigned the <b>BLUE</b> group. <br />
+        <p>
+            In this phase of the study, you have 15 minutes to learn more about the naval tactical maneuvering in simulated environments. Before you begin, you will need to:
+        </p>
+        <p>1. Open the NavyTac App on your desktop <br />
+            2. Enter your assigned username/alias <br />
+            3. When asked for an access code, use: <b>ADTN</b><br />
+            A timer will be available to help you track your 15-minute session.
+        </p>
+        
+                <p>Your username: <b><span class="username-display"></span></b></p>
+        <p><b>Important:</b> Ensure you use the access code <b>ADTN</b> when prompted during launch</p>
+    
+        <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+
+        <p>
+            <br/> If you experience any issues:<br />
+            1. Verify you used Correct access code <b>ADTN</b><br/>
+            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
+            3. If problems persist, alert a researcher
+        </p>
+    
+        <p>
+            After 15 minutes, when the timer expires or the simulation completes, close the application window. 
+            You may then proceed to the next section.
+        </p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true);  ">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability');"> Next (6/10) </button>
+    </section>
+
+
+
+
+
+
+<!-- QUIZ 5 -->
+<!-- Survey page after first training -->
+<section class="Usability", id="Usability">
+    <p>Tell us about your experience with learning</p>
+    <p>   <a class="learning-s" , target="_blank">Learning Survey (8 Questions)</a></p>
+    <p>When you submit the survey, you can come back here and click Next </p>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true);  ">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Usability','Posttest');">Next (7/10) </button>
+</section>
+<!-- end -->
+
+
+
+
+
+<!-- Post Test Page  -->
+<section class="Posttest", id="Posttest">
+    <p>Now please take Beginner Quiz 8</p>
+        <p>
+            You will now take a post training quiz! Before starting, note the following requirements:
+        </p>
+        <p>1. Launch the NavyTac App from your desktop again.<br />
+            2. Enter your assigned username/alias <br />
+            3. Use access code: <b>PSTX</b>
+        </p>
+                <p>Your username: <b><span class="username-display"></span></b></p>
+
+        <p><b>Important:</b> Ensure you enter code <b>PSTX</b> when starting the application</p>
+        <!-- <p>
+            A 15-minute countdown timer will automatically begin when the quiz starts.<br />
+            Try to complete all questions within the time limit.
+        </p> -->
+        <p>
+            <br/> If you experience any issues:<br />
+            1. Verify you used Correct access code <b>PSTX</b><br/>
+            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
+            3. If problems persist, alert a researcher
+        </p>
+    
+        <p>
+            After 15 minutes, when the timer expires or the simulation completes, close the application window. 
+            You may then proceed to the next section.
+        </p>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true);  ">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false);">Next (8/10)</button>
+</section>
+<!-- end -->
+
+<!-- QUIZ  -->
+<!-- Alternative Training Page  -->
+<section class="Alternative1" , id="Alternative1">
+    <p>
+        You will now use a different training method  <b> Blue </b>, for 15 minutes. Please
+    </p>
+    <p>
+        1. Once again open the NavyTac App from your desktop <br />
+        2. Enter your provided username/alias. <br />
+        3. When asked for an access code, use: <b>ADTN</b> <br />
+    </p>
+            <p>Your username: <b><span class="username-display"></span></b></p>
+
+    <p><b>Important:</b> Ensure you enter code <b>ADTN</b> when starting the application</p>
+    <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    
+        <p>
+            A 15-minute countdown timer will automatically begin when the quiz starts.<br />
+            Try to complete all questions within the time limit.
+        </p>
+        <p>
+            <br/> If you experience any issues:<br />
+            1. Verify you used Correct access code <b>ADTN</b><br/>
+            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
+            3. If problems persist, alert a researcher
+        </p>
+        <p>
+            When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage.<br />
+        </p>
+
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true);  ">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1');"> Next (9/10)</button>
+</section>
+<!-- end -->
+
+
+<section class="Alternative2" , id="Alternative2">
+        <p>
+            You will now use a different training method  <b> Yellow </b> 
+            provided by the link, for 15 minutes. Please
+            <p>
+                1. Once again open the NavyTac App from your desktop <br />
+                2. Enter your provided username/alias. <br />
+                3. When asked for an access code, use: <b>NATN</b> <br />
+            </p>
+                    <p>Your username: <b><span class="username-display"></span></b></p>
+
+            <p><b>Important:</b> Ensure you enter code <b>NATN</b> when starting the application</p>
+            <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            
+                <p>
+                    A 15-minute countdown timer will automatically begin when the quiz starts.<br />
+                    Try to complete all questions within the time limit.
+                </p>
+                <p>
+                    <br/> If you experience any issues:<br />
+                    1. Verify you used Correct access code <b>NATN</b><br/>
+                    2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
+                    3. If problems persist, alert a researcher
+                </p>
+                <p>
+                    When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage.<br />
+                </p>
+        
+            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true);  ">Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1');"> Next (9/10)</button>
+        </section>
+    </section>
+
+
+    
+
+
+
+    <!-- Comparison Page  -->
+    <section class="Comparison1" id="Comparison1">
+        <p>
+            Compare the
+            <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
+            <b>yellow</b> (RAFT)
+        </span>
+            and
+            <span style="color: #1e88e5;">
+            <b>blue</b> (NAT)
+        </span>
+            learning alternatives using the link below.
+        </p>
+        <p></p>
+        <p>
+            Remember you started with
+            <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
+            Yellow (RAFT)
+        </span>
+            first and now you are doing
+            <span style="color: #1e88e5;">
+            Blue (NAT)
+        </span>
+        </p>
+        <p></p>
+
+        <p><a class="comp-s" target="_blank">Comparison Survey (8 Questions)</a></p>
+        <p>When you are finished with this survey, you are done and can move on to our thanks!</p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true);  ">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Finish');">Next (10/10)</button>
+    </section>
+   
+    
+
+    <section class="Comparison2" id="Comparison2">
+        <p>
+            Compare the
+            <span style="color: #1e88e5;">
+            <b>blue</b> (NAT)
+        </span>
+            and
+            <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
+            <b>yellow</b> (adaptive)
+        </span>
+            learning alternatives using the link below.
+        </p>
+        <p></p>
+        <p>
+            <b>Remember</b> you started with
+            <span style="color: #1e88e5;">
+            Blue (NAT) first
+        </span>
+            and now you are doing
+            <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
+            Yellow (RAFT)
+        </span>
+        </p>
+        <p></p>
+
+        <p><a class="other-comp" target="_blank">Comparison Survey (8 Questions)</a></p>
+        <p>When you are finished with this survey, you are done and can move on to our thanks!</p>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true);  ">Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Finish');">Next (10/10)</button>
+    </section>
+
+
+    <section class="Finish" , id="Finish">
+        <p>You are now finished with the experiment. <b>Thank you</b> for participating! You may now close this tab. </p>
+        <p>If your username is drawn in our random drawing, you will be emailed an Amazon gift card! </p>
+        <a href="https://www.cse.unr.edu">Done</a>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="js/buttonscripts.js"></script>
+<script>
+    function setAllLinks(){
+        var studentname = localStorage.getItem('username');
+        var consent = document.querySelector('.consent-link');
+        // set consentLink href to #
+        consent.href = `https://unr.az1.qualtrics.com/jfe/form/SV_860VF6UNXd0Gksu`;
+
+        var demograph = document.querySelector('.demograph');
+        demograph.href = `https://unr.az1.qualtrics.com/jfe/form/SV_54QPvIQipHNObZA`
+
+        var learning = document.querySelector('.learning-s');
+        learning.href = `https://unr.az1.qualtrics.com/jfe/form/SV_0enJzRPBWHfkGR8`
+
+        var comp = document.querySelector('.comp-s');
+        comp.href = `https://unr.az1.qualtrics.com/jfe/form/SV_cHKAgxvnprNLJQO`
+
+        var compNew = document.querySelector('.other-comp');
+        compNew.href = `https://unr.az1.qualtrics.com/jfe/form/SV_cHKAgxvnprNLJQO`
+
+        document.querySelectorAll('.username-display')
+      .forEach(el => el.textContent = studentname);
+
+    }
+
+
+</script>
+</html>

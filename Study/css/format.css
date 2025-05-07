@@ -1,0 +1,94 @@
+body {
+  background-color: #e3f2fd; /* Light blue for a calm background */
+}
+
+h1 {
+  font-family: 'Helvetica', sans-serif;
+  color: #1a237e; /* Dark blue for a strong heading */
+  font-size: 45px;
+}
+
+p {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 18px;
+  color: #37474f; /* Dark gray for readability */
+}
+
+a {
+  color: #0288d1; /* Medium blue for a pleasant contrast */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #01579b; /* Darker blue on hover */
+}
+
+label {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 16px;
+  color: #455a64; /* Slightly dark gray */
+}
+
+button {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 20px;
+  margin: 20px;
+  background-color: #0288d1; /* Medium blue */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #01579b; /* Darker blue on hover */
+}
+
+.box {
+  text-align: center;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px 40px;
+  border-radius: 10px;
+  border: solid 2px #0288d1; /* Medium blue */
+  background-color: #ffffff; /* White for contrast */
+  color: #333;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+}
+
+.redbox {
+  width: 150px; /* Increased width for better visibility */
+  height: 40px; /* Increased height */
+  margin: 10px auto;
+  border: solid 2px #f9a825; /* Golden yellow border */
+  background-color: #fff59d; /* Light yellow background */
+  color: #f57f17; /* Darker yellow text */
+  display: none;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 40px; /* Vertically center text */
+}
+
+
+.bluebox {
+  width: 150px; /* Increased width */
+  height: 40px; /* Increased height */
+  margin: 10px auto;
+  border: solid 2px #1565c0; /* Blue border */
+  background-color: #82b1ff; /* Light blue background */
+  color: #0d47a1; /* Darker blue text */
+  display: none;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 40px; /* Vertically center text */
+}
+
+.invalid {
+  display: none;
+  font-size: 14px;
+  color: #d32f2f; /* Bright red for warnings */
+  font-family: 'Helvetica', sans-serif;
+}
