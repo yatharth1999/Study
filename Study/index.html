@@ -1,65 +1,101 @@
 <html lang="en">
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<head> <!-- It's good practice to have meta, title, links within head -->
+    <meta charset="utf-8"> <!-- Specifies the character encoding for the HTML document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Configures the viewport for responsive design -->
 
-<script src="js/alarm.js"></script>
-<title>NAT VS RAFT</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<link rel="stylesheet" href="css/sections.css">
-<link rel="stylesheet" href="css/format.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-<audio id="alarm" src="http://soundbible.com/grab.php?id=1766&type=mp3"></audio>
+    
+    <title>TACT VS NAT</title> <!-- Sets the title of the HTML document, displayed in the browser's title bar or tab -->
+    <!-- External CSS stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> <!-- Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="css/sections.css"> <!-- Custom CSS for sections -->
+    <link rel="stylesheet" href="css/format.css"> <!-- Custom CSS for formatting -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"> <!-- Toastify CSS for notifications -->
+    <audio id="alarm" src="http://soundbible.com/grab.php?id=1766&type=mp3"></audio> <!-- Audio element for an alarm sound -->
 
-<style>
-    /* Custom navigation bar styling */
-    .custom-nav {
-        display: flex;
-        justify-content: space-around;
-        background-color: #333;
-        padding: 10px 0;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-    }
+    <style>
+        /* Custom navigation bar styling */
+        .custom-nav {
+            display: flex; /* Enables flexbox layout */
+            justify-content: space-around; /* Distributes items evenly with space around them */
+            background-color: #333; /* Dark background color for the navbar */
+            padding: 10px 0; /* Padding for the navbar */
+            position: fixed; /* Fixes the navbar at the top of the viewport */
+            width: 100%; /* Makes the navbar span the full width */
+            top: 0; /* Positions the navbar at the top */
+            z-index: 1000; /* Ensures the navbar stays on top of other content */
+        }
 
-    .custom-nav a {
-        color: #fff;
-        text-decoration: none;
-        padding: 10px 15px;
-        font-weight: bold;
-        position: relative;
-    }
+        .custom-nav a {
+            color: #fff; /* White text color for navbar links */
+            text-decoration: none; /* Removes underline from links */
+            padding: 10px 15px; /* Padding for navbar links */
+            font-weight: bold; /* Makes the link text bold */
+            position: relative; /* Needed for absolute positioning of pseudo-elements */
+        }
 
-    .custom-nav a:hover {
-        background-color: #575757;
-        border-radius: 5px;
-    }
+        .custom-nav a:hover {
+            background-color: #575757; /* Darker background on hover */
+            border-radius: 5px; /* Rounded corners on hover */
+        }
 
-    .current-section {
-        background-color: #00bcd4; /* Soft teal color */
-        color: #fff;
-        border-radius: 5px;
-    }
+        .current-section {
+            background-color: #00bcd4; /* Soft teal color for the current section link */
+            color: #fff; /* White text color for the current section link */
+            border-radius: 5px; /* Rounded corners for the current section link */
+        }
 
-    /* Subtitle styling */
-    .custom-nav a::after {
-        content: attr(data-subtitle); /* Get subtitle from data attribute */
-        display: block;
-        font-size: 0.8em;
-        color: #bfbfbf; /* Light gray color for subtitle */
-        margin-top: 5px;
-    }
+        /* Subtitle styling for navigation links */
+        .custom-nav a::after {
+            content: attr(data-subtitle); /* Gets subtitle text from the 'data-subtitle' attribute */
+            display: block; /* Makes the subtitle appear on a new line */
+            font-size: 0.8em; /* Smaller font size for the subtitle */
+            color: #bfbfbf; /* Light gray color for subtitle text */
+            margin-top: 5px; /* Space above the subtitle */
+        }
 
-    body {
-        padding-top: 60px; /* To prevent content from being hidden under the navbar */
-    }
-</style>
+        body {
+            padding-top: 60px; /* Adds padding to the top of the body to prevent content from being hidden under the fixed navbar */
+        }
+
+        /* Styling for the main content box */
+        .box {
+            width: 80%; /* Sets the width of the content box */
+            margin: 20px auto; /* Centers the box horizontally and adds top/bottom margin */
+            padding: 20px; /* Adds internal spacing within the box */
+            border: 1px solid #ccc; /* Adds a light gray border to the box */
+            border-radius: 8px; /* Rounds the corners of the box */
+            background-color: #f9f9f9; /* Light background color for the box */
+        }
+
+        /* Custom styling for checkboxes and their labels */
+        .form-check {
+            /* Override Bootstrap's padding-left for float layout if needed, or adjust for flex */
+            padding-left: 0; /* Resets padding for custom layout */
+            display: flex; /* Use flexbox for alignment of checkbox and label */
+            align-items: center; /* Vertically aligns items in the center */
+        }
+        .form-check .form-check-input {
+            /* Override Bootstrap's float and negative margin if they interfere with flex alignment */
+            float: none; /* Disables floating */
+            margin-left: 0; /* Resets left margin */
+
+            width: 1.3rem; /* Larger checkbox width */
+            height: 1.3rem; /* Larger checkbox height */
+            margin-top: 0; /* Resets top margin, flex handles vertical alignment */
+            margin-right: 0.5rem; /* Adds space between checkbox and label */
+            border: 1px solid #333; /* Darker border for better visibility */
+        }
+        .form-check-label {
+            font-size: 1.1rem; /* Larger label text */
+            /* No padding-left needed as margin-right on input handles spacing */
+        }
+    </style>
+</head>
 
 
-
-<body onload="setAllLinks()">
+<body onload="setAllLinks()"> <!-- Calls setAllLinks function when the body finishes loading -->
+<!-- Custom Navigation Bar -->
 <div class="custom-nav">
     <a href="#Name" id="nav-name" data-subtitle="Enter your name">1/10 Name Entry</a>
     <a href="#Consent" id="nav-consent" data-subtitle="Give consent">2/10 Consent</a>
@@ -72,207 +108,221 @@
     <a href="#Training2" id="nav-training2" data-subtitle="Second training session (15 min)">9/10 Training 2</a>
     <a href="#Comparison1" id="nav-comparison1" data-subtitle="Compare results">10/10 Comparison</a>
 </div>
+<!-- Main Content Container -->
 <div class ="box">
 
-    <h1>Study</h1>
-    <div class = "redbox", id="redbox">
+    <h1>Study</h1> <!-- Main heading for the study -->
+    <!-- Example colored boxes (likely for demonstration or specific UI elements) -->
+    <div class="redbox" id="redbox">
         <p>Yellow</p>
     </div>
 
-    <div class = "bluebox", id="bluebox">
+    <div class="bluebox" id="bluebox">
         <p>Blue</p>
     </div>
 
-
-
-
-
-
-<!-- First Page - Student Login -->
-    <section class="Name", id="Name">
+<!-- Section 1: Student Login -->
+    <section class="Name" id="Name"> <!-- 'Name' section for user login -->
         <p>Please enter the case-sensitive username/alias given to you in the entry field below, <br />
             and then press the <q>Submit Name</q> button.</p>
-        <p><form onsubmit="event.preventDefault(); checkUser('username', 'invalid', 'Name', 'Consent');">
+        <p><form onsubmit="event.preventDefault(); checkUser('username', 'invalid', 'Name', 'Consent');"> <!-- Form for username input -->
         <div class="form-group">
             <label for="username">Username/Alias:</label>
-            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username">
+            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username"> <!-- Username input field -->
         </div>
     </form> </p>
-        <p><span class="invalid", id="invalid">Invalid username/alias.</span></p>
-        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent');"> Submit Name</button>
+        <p><span class="invalid" id="invalid">Invalid username/alias.</span></p> <!-- Error message for invalid username -->
+        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent');"> Submit Name</button> <!-- Button to submit username -->
     </section>
-<!-- end -->
+<!-- End of Student Login Section -->
 
-
-
-<!-- Quiz 1 -->
-<!-- Consent Form Page -->
-    <section class="Consent", id="Consent">
-        <p>Your username: <b><span class="username-display"></span></b></p>
-        <p>Provide consent by reading and filling out the consent form using the link below.</p>
-<!--        <p>Note that your username/alias has already been filled out.</p>-->
-        <p>   <a class="consent-link" target="_blank">Consent Form (1 Question)</a></p>
+<!-- Section 2: Consent Form -->
+    <section class="Consent" id="Consent"> <!-- 'Consent' section -->
+        <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
+        <p>Provide consent by reading and filling out the consent form embedded below.</p>
+        <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_860VF6UNXd0Gksu" style="border:0"></iframe> <!-- Embedded Qualtrics consent form -->
         <p>Once you've filled it out and submitted your consent, you can come back here, <br />
             then, and only then, click the button below to move on. </p>
-        <p style="color: #d32f2f; background-color: #ffebee; padding: 10px; border-radius: 5px;">
+        
+        <!-- Confirmation checkbox for consent form submission -->
+        <div class="form-check mt-2 mb-2">
+            <input class="form-check-input" type="checkbox" value="" id="consentFormSubmittedCheck">
+            <label class="form-check-label" for="consentFormSubmittedCheck">
+                I have submitted the consent form.
+            </label>
+        </div>
+        <p id="consentErrorMsg" style="color: red; display: none;">Please confirm you have submitted the form by checking the box above.</p> <!-- Error message for consent confirmation -->
+        
+        <p style="color: #d32f2f; background-color: #ffebee; padding: 10px; border-radius: 5px;"> <!-- Important note about study duration -->
             The study will take approximately <b> 90 minutes</b>.
         </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Consent','Demographics');"> Next (2/10)</button>
+        <!-- Button to proceed to the next section, checks for consent form submission -->
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('consentFormSubmittedCheck', 'consentErrorMsg', function() { nextSection('Consent','Demographics'); });"> Next (2/10)</button>
     </section>
-<!-- end -->
+<!-- End of Consent Form Section -->
 
-
-
-
-<!-- Quiz 2 -->
-<!-- Demographic Page -->
-    <section class="Demographics", id="Demographics">
-        <p>Your username: <b><span class="username-display"></span></b></p>
-        <p>Tell us a little about yourself</p>
-        <p>   <a class="demograph" , target="_blank">Demographics Survey (6 Questions)</a></p>
+<!-- Section 3: Demographics Page -->
+    <section class="Demographics" id="Demographics"> <!-- 'Demographics' section -->
+        <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
+        <p>Tell us a little about yourself by filling out the survey embedded below.</p>
+        <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_8raJG7XkSbZfICG" style="border:0"></iframe> <!-- Embedded Qualtrics demographics form -->
         <p>After you submit the above form, click the <q>Next</q> button below to continue </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Demographics', 'Consent', true);  ">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Demographics','Rules'); startTimer(20, 'timer');">Next (3/10) </button>
+        
+        <!-- Confirmation checkbox for demographics form submission -->
+        <div class="form-check mt-2 mb-2">
+            <input class="form-check-input" type="checkbox" value="" id="demographicsFormSubmittedCheck">
+            <label class="form-check-label" for="demographicsFormSubmittedCheck">
+                I have submitted the demographics form.
+            </label>
+        </div>
+        <p id="demographicsErrorMsg" style="color: red; display: none;">Please confirm you have submitted the form by checking the box above.</p> <!-- Error message for demographics confirmation -->
+
+        <button type="button" class="btn btn-primary" onclick="nextSection('Demographics', 'Consent', true);  ">Back</button> <!-- Button to go back to the previous section -->
+        <!-- Button to proceed, checks for demographics form submission and starts a timer -->
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('demographicsFormSubmittedCheck', 'demographicsErrorMsg', function() { nextSection('Demographics','Rules'); startTimer(20, 'timer'); });">Next (3/10) </button>
     </section>
-<!-- end -->
+<!-- End of Demographics Page Section -->
  
     
     <!-- Rules Page -->
-    <section class="Rules", id="Rules">
-        <p id="timer"> 10:00 </p>
+    <section class="Rules" id="Rules">
+        <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
+        <!-- Countdown timer -->
+        <p id="timer">10:00</p>
+    
+        <!-- New introductory text -->
         <p>
-            Start by taking a few minutes to learn about the 
-            nautical rules of the road. The link below takes you to a PDF guide to teach you about ship lighting at night. This knowledge helps you figure out a vessel's orientation (target angle) with respect to your ship at night - when it is difficult to see the vessel.
-
+            Now let's take a few moments to learn about the naval tactical simulation.  
+            First, watch the video below—it walks you through the simulation controls step by step.
         </p>
-        <p>   <a href="https://www.cse.unr.edu/~korbend/study1/rules_guide.pdf", target="_blank">Abbreviated Guide To Navigation Rules Of The Road (5 Minutes)</a></p>
+    
+        <!-- Simulation-controls video -->
+        <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/GgH_UVyH-HA"
+                title="Naval Tactical Simulation – Control Tutorial"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+    
+        <!-- PDF controls reference -->
         <p>
-            Next, go through the video tutorial below. The tutorial provides an outline of our study, explains important marine terminology, and describes the three nautical rules of the road that determine who has the right of way and what action to take when there is a risk of collision at sea.</p>
-        <p>   <a href="https://docs.google.com/presentation/d/1vlvqnaKCcHe1fFUXnELPH8XVrBuZh62Lc_h_nDvBOm8/edit?usp=sharing", target="_blank">Rules of the Road (Slides) (5 Minutes)</a></p> 
-
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        <br>
-        <br>
-        <p> Finally, the video tutorial below shows you how to use the simulation trainer. It is only a couple of minutes long.</p>
-
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-
+            We’ve also attached a concise PDF reference with all the controls for quick lookup:
+        </p>
         <p>
-            You can go through it all within the maximum of 10
-            minutes, but you may finish earlier. Then click on
-            the <q>Next</q> button below to move on. </p>
-
-        <button type="button" class="btn btn-primary" onclick="nextSection('Rules','Demographics', true); stopTimer();  ">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Rules','Pretest'); stopTimer();"> Next (4/10)</button>
+            <a href="https://www.cse.unr.edu/~yvohra/Study/SeaCraft_Controls.pdf"
+               target="_blank">
+               Simulation Controls Reference (PDF)
+            </a>
+        </p>
+    
+        <br><br>
+    
+        <!-- Instructions about time navigation -->
+        <p>
+            You should be able to cover everything within the 10-minute window, but feel free to move on sooner.
+            When you're ready, click <q>Next</q> to continue.
+        </p>
+    
+        <!-- Navigation buttons -->
+        <button type="button" class="btn btn-primary"
+                onclick="nextSection('Rules','Demographics', true); stopTimer();">
+            Back
+        </button>
+        <button type="button" class="btn btn-primary"
+                onclick="nextSection('Rules','Pretest'); stopTimer();">
+            Next&nbsp;(4/10)
+        </button>
     </section>
+<!-- End of Rules Page Section -->
 
-<!-- end -->
-
-
-
-
-
-
-<!-- Quiz 3 -->
-<!-- Pretest Page -->
-    <section class="Pretest" , id="Pretest">
+<!-- Section 5: Pretest Page -->
+    <section class="Pretest" id="Pretest">
         <p>
-            You will now take a Pre-Test quiz! Before starting, note the following requirements:
+            You will now take a Pre-Test! Before starting, note the following requirements:
         </p>
         
-        <p>1. Launch the NavyTac App from your desktop <br />
-            2. Enter your assigned case-sensitive username/alias <br />
-            3. Use access code: <b>PRTX</b>
+        <p>1. Launch the SeaCraft App from your desktop <br>           2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br> 
+            3. Use access code: <b>ABC</b>
         </p>
-        <p>Your username: <b><span class="username-display"></span></b></p>
+        
     
-        <p><b>Important:</b> Ensure you enter correct access code  <b>PRTX</b> when starting the application</p>
+        <p><b>Important:</b> Ensure you enter correct access code <b>ABC</b> and username <b><span class="username-display"></span></b> when starting the application</p>
     
         <p>
             A 15-minute countdown timer will automatically begin when the quiz starts.<br>
             Try to complete all questions within the time limit.
         </p>
         <p>
-            <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>PRTX</b><br/>
+            <br/> If you experience any issues:<br> 
+            1. Verify you used Correct access code <b>ABC</b><br/>
             2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
             3. If problems persist, alert a researcher
         </p>
        
-        <p>
-            When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage.
+        <p> 
+            When completed, the app will display a completion screen. Click on the exit button and come back to this webpage.
         </p>
         <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); startTimer(10, 'timer');">Back</button>
         <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false);"> Next (5/10) </button>
     </section>
+<!-- End of Pretest Page Section -->
 
-<!-- end -->
 
-
-<!-- TRAINING START  -->
-<!-- Quiz 4 -->
-<!-- Training 1 : Yellow Non Adaptive  -->
-    <section class="Training1" , id="Training1">
+<!-- TRAINING SECTIONS START -->
+<!-- Section 6a: Training 1 (Yellow Non Adaptive) -->
+    <section class="Training1" id="Training1"> <!-- 'Training1' section (Yellow group) -->
         <p>
             You have been assigned the <b>YELLOW</b> group. <br />
         </p>
         <p>
-            In this phase of the study, you have 15 minutes to learn more about the naval tactical maneuvering in simulated environments. Before you begin, you will need to:
+            In this phase of the study, you have 15 minutes to learn more about the Tactics in simulated environments. Before you begin, you will need to:
         </p>
-        <p>1. Open the NavyTac App on your desktop <br />
-            2. Enter your assigned username/alias <br />
-            3. When asked for an access code, use: <b>NATN</b> <br />
+        <p>1. Open the SeaCraft App on your desktop <br />
+            2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
+            3. When asked for an access code, use: <b>BBB</b> <br /> <!-- Access code for Training 1 -->
             A timer will be available to help you track your 15-minute session.
         </p>
-                <p>Your username: <b><span class="username-display"></span></b></p>  
-        <p><b>Important:</b> Ensure you use the access code <b>NATN</b> when prompted during launch</p>
+        <p><b>Important:</b> Ensure you use the access code <b>BBB</b> and username <b><span class="username-display"></span></b> when prompted during launch</p>
         <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA"
                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
+                allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
                 <p>
                     <br/> If you experience any issues:<br />
-                    1. Verify you used Correct access code <b>NATN</b><br/>
+                    1. Verify you used Correct access code <b>BBB</b><br/>
                     2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
                     3. If problems persist, alert a researcher
                 </p>
         <p>
-            When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage. If you experience any issues:<br />
+            When completed, the app will display a completion screen. Click on the exit button and come back to this webpage. If you experience any issues:<br />
         </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true);">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability');">Next (6/10)</button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true);">Back</button> <!-- Button to go back -->
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability');">Next (6/10)</button> <!-- Button to proceed to Usability survey -->
     </section>
-<!-- end -->
+<!-- End of Training 1 Section -->
 
-
-
-
-
-<!-- Training 2 : Blue Adaptive Training  -->
-    <section class="Training2" , id="Training2">
+<!-- Section 6b: Training 2 (Blue Adaptive Training) -->
+    <section class="Training2" id="Training2"> <!-- 'Training2' section (Blue group) -->
+        <p>You have been assigned the <b>BLUE</b> group.</p>
         <p>
-            You have been assigned the <b>BLUE</b> group. <br />
-        <p>
-            In this phase of the study, you have 15 minutes to learn more about the naval tactical maneuvering in simulated environments. Before you begin, you will need to:
+            In this phase of the study, you have 15 minutes to learn more about the Tactics in simulated environments. Before you begin, you will need to:
         </p>
-        <p>1. Open the NavyTac App on your desktop <br />
-            2. Enter your assigned username/alias <br />
-            3. When asked for an access code, use: <b>ADTN</b><br />
+        <p>1. Open the SeaCraft App on your desktop <br />
+            2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
+            3. When asked for an access code, use: <b>AAA</b><br /> <!-- Access code for Training 2 -->
             A timer will be available to help you track your 15-minute session.
         </p>
         
-                <p>Your username: <b><span class="username-display"></span></b></p>
-        <p><b>Important:</b> Ensure you use the access code <b>ADTN</b> when prompted during launch</p>
+        <p><b>Important:</b> Ensure you use the access code <b>AAA</b> and username <b><span class="username-display"></span></b> when prompted during launch</p>
     
         <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA"
                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
+                allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
 
         <p>
             <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>ADTN</b><br/>
+            1. Verify you used Correct access code <b>AAA</b><br/>
             2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
             3. If problems persist, alert a researcher
         </p>
@@ -281,50 +331,46 @@
             After 15 minutes, when the timer expires or the simulation completes, close the application window. 
             You may then proceed to the next section.
         </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true);  ">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability');"> Next (6/10) </button>
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true);  ">Back</button> <!-- Button to go back -->
+        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability');"> Next (6/10) </button> <!-- Button to proceed to Usability survey -->
     </section>
+<!-- End of Training 2 Section -->
 
-
-
-
-
-
-<!-- QUIZ 5 -->
-<!-- Survey page after first training -->
-<section class="Usability", id="Usability">
-    <p>Tell us about your experience with learning</p>
-    <p>   <a class="learning-s" , target="_blank">Learning Survey (8 Questions)</a></p>
+<!-- Section 7: Usability Survey Page (after first training) -->
+<section class="Usability" id="Usability"> <!-- 'Usability' survey section -->
+    <p>Tell us about your experience with learning by filling out the survey embedded below.</p>
+    <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_40lvj72JnIx3Tca" style="border:0"></iframe> <!-- Embedded Qualtrics usability survey -->
     <p>When you submit the survey, you can come back here and click Next </p>
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true);  ">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Usability','Posttest');">Next (7/10) </button>
+
+    <!-- Confirmation checkbox for usability survey submission -->
+    <div class="form-check mt-2 mb-2">
+        <input class="form-check-input" type="checkbox" value="" id="usabilityFormSubmittedCheck">
+        <label class="form-check-label" for="usabilityFormSubmittedCheck">
+            I have submitted the survey.
+        </label>
+    </div>
+    <p id="usabilityErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for usability survey confirmation -->
+
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true);  ">Back</button> <!-- Button to go back to the previous training section (randomly determined) -->
+    <!-- Button to proceed, checks for survey submission -->
+    <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('usabilityFormSubmittedCheck', 'usabilityErrorMsg', function() { nextSection('Usability','Posttest'); });">Next (7/10) </button>
 </section>
-<!-- end -->
+<!-- End of Usability Survey Section -->
 
-
-
-
-
-<!-- Post Test Page  -->
-<section class="Posttest", id="Posttest">
-    <p>Now please take Beginner Quiz 8</p>
+<!-- Section 8: Post Test Page -->
+<section class="Posttest" id="Posttest"> <!-- 'Posttest' section -->
         <p>
-            You will now take a post training quiz! Before starting, note the following requirements:
+           You will now take a Post-Test! Before starting, note the following requirements:
         </p>
-        <p>1. Launch the NavyTac App from your desktop again.<br />
-            2. Enter your assigned username/alias <br />
-            3. Use access code: <b>PSTX</b>
+        <p>1. Launch the SeaCraft App from your desktop again.<br />
+            2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
+            3. Use access code: <b>XYZ</b> <!-- Access code for Posttest -->
         </p>
-                <p>Your username: <b><span class="username-display"></span></b></p>
 
-        <p><b>Important:</b> Ensure you enter code <b>PSTX</b> when starting the application</p>
-        <!-- <p>
-            A 15-minute countdown timer will automatically begin when the quiz starts.<br />
-            Try to complete all questions within the time limit.
-        </p> -->
+        <p><b>Important:</b> Ensure you enter code <b>XYZ</b> and username <b><span class="username-display"></span></b> when starting the application</p>
         <p>
             <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>PSTX</b><br/>
+            1. Verify you used Correct access code <b>XYZ</b><br/>
             2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
             3. If problems persist, alert a researcher
         </p>
@@ -333,27 +379,25 @@
             After 15 minutes, when the timer expires or the simulation completes, close the application window. 
             You may then proceed to the next section.
         </p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true);  ">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false);">Next (8/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true);  ">Back</button> <!-- Button to go back -->
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false);">Next (8/10)</button> <!-- Button to proceed to a random alternative training section -->
 </section>
-<!-- end -->
+<!-- End of Post Test Page Section -->
 
-<!-- QUIZ  -->
-<!-- Alternative Training Page  -->
-<section class="Alternative1" , id="Alternative1">
+<!-- Section 9a: Alternative Training Page 1 -->
+<section class="Alternative1" id="Alternative1"> <!-- 'Alternative1' training section -->
     <p>
-        You will now use a different training method  <b> Blue </b>, for 15 minutes. Please
+        You will now use a different training method <b> Blue </b>, for 15 minutes.
     </p>
     <p>
-        1. Once again open the NavyTac App from your desktop <br />
-        2. Enter your provided username/alias. <br />
-        3. When asked for an access code, use: <b>ADTN</b> <br />
+        1. Once again open the SeaCraft App from your desktop <br />
+        2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
+        3. When asked for an access code, use: <b>AAA</b> <br /> <!-- Access code for Alternative Training 1 (Blue) -->
     </p>
-            <p>Your username: <b><span class="username-display"></span></b></p>
 
-    <p><b>Important:</b> Ensure you enter code <b>ADTN</b> when starting the application</p>
+    <p><b>Important:</b> Ensure you enter code <b>AAA</b> and username <b><span class="username-display"></span></b> when starting the application</p>
     <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
     
         <p>
             A 15-minute countdown timer will automatically begin when the quiz starts.<br />
@@ -361,34 +405,35 @@
         </p>
         <p>
             <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>ADTN</b><br/>
+            1. Verify you used Correct access code <b>AAA</b><br/>
             2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
             3. If problems persist, alert a researcher
         </p>
         <p>
-            When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage.<br />
+            When completed, the app will display a completion screen. Click on the exit button and come back to this webpage.<br />
         </p>
 
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true);  ">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1');"> Next (9/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true);  ">Back</button> <!-- Button to go back -->
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1');"> Next (9/10)</button> <!-- Button to proceed to Comparison 1 -->
 </section>
-<!-- end -->
+<!-- End of Alternative Training Page 1 Section -->
 
 
-<section class="Alternative2" , id="Alternative2">
+<!-- Section 9b: Alternative Training Page 2 -->
+<section class="Alternative2" id="Alternative2"> <!-- 'Alternative2' training section -->
         <p>
-            You will now use a different training method  <b> Yellow </b> 
-            provided by the link, for 15 minutes. Please
+            You will now use a different training method <b> Yellow </b> 
+            provided by the link, for 15 minutes.
+        </p>
             <p>
-                1. Once again open the NavyTac App from your desktop <br />
-                2. Enter your provided username/alias. <br />
-                3. When asked for an access code, use: <b>NATN</b> <br />
+                1. Once again open the SeaCraft App from your desktop <br />
+                2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
+                3. When asked for an access code, use: <b>BBB</b> <br /> <!-- Access code for Alternative Training 2 (Yellow) -->
             </p>
-                    <p>Your username: <b><span class="username-display"></span></b></p>
 
-            <p><b>Important:</b> Ensure you enter code <b>NATN</b> when starting the application</p>
+            <p><b>Important:</b> Ensure you enter code <b>BBB</b> and username <b><span class="username-display"></span></b> when starting the application</p>
             <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
             
                 <p>
                     A 15-minute countdown timer will automatically begin when the quiz starts.<br />
@@ -396,36 +441,31 @@
                 </p>
                 <p>
                     <br/> If you experience any issues:<br />
-                    1. Verify you used Correct access code <b>NATN</b><br/>
+                    1. Verify you used Correct access code <b>BBB</b><br/>
                     2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
                     3. If problems persist, alert a researcher
                 </p>
                 <p>
-                    When completed, the app will display a completion screen. Click on the exit button and comeback to this webpage.<br />
+                    When completed, the app will display a completion screen. Click on the exit button and come back to this webpage.<br />
                 </p>
         
-            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true);  ">Back</button>
-            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1');"> Next (9/10)</button>
+            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Posttest', true);  ">Back</button> <!-- Button to go back -->
+            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Comparison2');"> Next (9/10)</button> <!-- Button to proceed to Comparison 2 -->
         </section>
-    </section>
+    <!-- Removed an extra closing </section> tag that was here -->
 
-
-    
-
-
-
-    <!-- Comparison Page  -->
-    <section class="Comparison1" id="Comparison1">
+    <!-- Section 10a: Comparison Page 1 -->
+    <section class="Comparison1" id="Comparison1"> <!-- 'Comparison1' survey section -->
         <p>
             Compare the
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            <b>yellow</b> (RAFT)
+            <b>yellow</b> (RAFT) <!-- Styling for 'yellow' (RAFT) -->
         </span>
             and
             <span style="color: #1e88e5;">
-            <b>blue</b> (NAT)
+            <b>blue</b> (NAT) <!-- Styling for 'blue' (NAT) -->
         </span>
-            learning alternatives using the link below.
+            learning alternatives using the survey embedded below.
         </p>
         <p></p>
         <p>
@@ -433,38 +473,47 @@
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
             Yellow (RAFT)
         </span>
-            first and now you are doing
+            and now you are doing
             <span style="color: #1e88e5;">
             Blue (NAT)
         </span>
         </p>
         <p></p>
-
-        <p><a class="comp-s" target="_blank">Comparison Survey (8 Questions)</a></p>
+        <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_bQ9FjwBlQc0ZL2S" style="border:0"></iframe> <!-- Embedded Qualtrics comparison survey -->
         <p>When you are finished with this survey, you are done and can move on to our thanks!</p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true);  ">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Finish');">Next (10/10)</button>
+        
+        <!-- Confirmation checkbox for comparison survey 1 submission -->
+        <div class="form-check mt-2 mb-2">
+            <input class="form-check-input" type="checkbox" value="" id="comparison1FormSubmittedCheck">
+            <label class="form-check-label" for="comparison1FormSubmittedCheck">
+                I have submitted the survey.
+            </label>
+        </div>
+        <p id="comparison1ErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for comparison survey 1 confirmation -->
+
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true);  ">Back</button> <!-- Button to go back -->
+        <!-- Button to proceed, checks for survey submission -->
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison1FormSubmittedCheck', 'comparison1ErrorMsg', function() { nextSection('Comparison1','Finish'); });">Next (10/10)</button>
     </section>
    
-    
-
-    <section class="Comparison2" id="Comparison2">
+    <!-- Section 10b: Comparison Page 2 -->
+    <section class="Comparison2" id="Comparison2"> <!-- 'Comparison2' survey section -->
         <p>
             Compare the
             <span style="color: #1e88e5;">
-            <b>blue</b> (NAT)
+            <b>blue</b> (NAT) <!-- Styling for 'blue' (NAT) -->
         </span>
             and
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            <b>yellow</b> (adaptive)
+            <b>yellow</b> (adaptive) <!-- Styling for 'yellow' (adaptive) -->
         </span>
-            learning alternatives using the link below.
+            learning alternatives using the survey embedded below.
         </p>
         <p></p>
         <p>
             <b>Remember</b> you started with
             <span style="color: #1e88e5;">
-            Blue (NAT) first
+            Blue (NAT)
         </span>
             and now you are doing
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
@@ -472,47 +521,70 @@
         </span>
         </p>
         <p></p>
-
-        <p><a class="other-comp" target="_blank">Comparison Survey (8 Questions)</a></p>
+        <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_bQ9FjwBlQc0ZL2S" style="border:0"></iframe> <!-- Embedded Qualtrics comparison survey -->
         <p>When you are finished with this survey, you are done and can move on to our thanks!</p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true);  ">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Finish');">Next (10/10)</button>
+
+        <!-- Confirmation checkbox for comparison survey 2 submission -->
+        <div class="form-check mt-2 mb-2">
+            <input class="form-check-input" type="checkbox" value="" id="comparison2FormSubmittedCheck">
+            <label class="form-check-label" for="comparison2FormSubmittedCheck">
+                I have submitted the survey.
+            </label>
+        </div>
+        <p id="comparison2ErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for comparison survey 2 confirmation -->
+
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true);  ">Back</button> <!-- Button to go back -->
+        <!-- Button to proceed, checks for survey submission -->
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison2FormSubmittedCheck', 'comparison2ErrorMsg', function() { nextSection('Comparison2','Finish'); });">Next (10/10)</button>
     </section>
 
 
-    <section class="Finish" , id="Finish">
+    <!-- Final Section: Finish Page -->
+    <section class="Finish" id="Finish"> <!-- 'Finish' section -->
         <p>You are now finished with the experiment. <b>Thank you</b> for participating! You may now close this tab. </p>
         <p>If your username is drawn in our random drawing, you will be emailed an Amazon gift card! </p>
-        <a href="https://www.cse.unr.edu">Done</a>
+        <a href="https://www.cse.unr.edu">Done</a> <!-- Link to an external page -->
     </section>
-</div>
+</div> <!-- End of main content box -->
 </body>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script src="js/buttonscripts.js"></script>
+<!-- JavaScript files -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script> <!-- Toastify JS for notifications -->
+<script src="js/alarm.js"></script> <!-- Custom JavaScript for alarm functionality -->
+<script src="js/buttonscripts.js"></script> <!-- Custom JavaScript for button interactions and section navigation -->
 <script>
+    // Function to set the username in all designated display areas
     function setAllLinks(){
-        var studentname = localStorage.getItem('username');
-        var consent = document.querySelector('.consent-link');
-        // set consentLink href to #
-        consent.href = `https://unr.az1.qualtrics.com/jfe/form/SV_860VF6UNXd0Gksu`;
-
-        var demograph = document.querySelector('.demograph');
-        demograph.href = `https://unr.az1.qualtrics.com/jfe/form/SV_8raJG7XkSbZfICG`
-
-        var learning = document.querySelector('.learning-s');
-        learning.href = `https://unr.az1.qualtrics.com/jfe/form/SV_40lvj72JnIx3Tca`
-
-        var comp = document.querySelector('.comp-s');
-        comp.href = `https://unr.az1.qualtrics.com/jfe/form/SV_bQ9FjwBlQc0ZL2S`
-
-        var compNew = document.querySelector('.other-comp');
-        compNew.href = `https://unr.az1.qualtrics.com/jfe/form/SV_bQ9FjwBlQc0ZL2S`
-
+        var studentName = localStorage.getItem('username'); // Retrieve username from local storage
+        // Update all elements with class 'username-display' with the retrieved username
         document.querySelectorAll('.username-display')
-      .forEach(el => el.textContent = studentname);
-
+      .forEach(el => el.textContent = studentName);
     }
 
+    // New function to check if a confirmation checkbox is checked before proceeding
+    function checkSubmissionAndProceed(checkboxId, errorMsgId, successCallback) {
+        const checkbox = document.getElementById(checkboxId); // Get the checkbox element
+        const errorMsgElement = document.getElementById(errorMsgId); // Get the error message element
 
+        if (checkbox && checkbox.checked) { // If checkbox exists and is checked
+            if (errorMsgElement) errorMsgElement.style.display = 'none'; // Hide error message
+            if (typeof successCallback === 'function') {
+                successCallback(); // Execute the success callback function (e.g., navigate to next section)
+            }
+        } else { // If checkbox is not checked
+            if (errorMsgElement) {
+                errorMsgElement.style.display = 'block'; // Show the error message
+            } else {
+                // Fallback alert if no error message element is provided
+                alert('Please confirm you have submitted the form by checking the box.');
+            }
+        }
+    }
+
+    // The body onload="setAllLinks()" is already present, so explicit window.onload is not strictly needed
+    // unless there are conflicts or multiple onload functions.
+    // window.onload = function() {
+    //     setAllLinks();
+    //     // Any other onload initializations
+    // };
 </script>
 </html>
