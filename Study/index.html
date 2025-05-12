@@ -12,6 +12,7 @@ html {
     <link rel="stylesheet" href="css/format.css"> <!-- Custom CSS for formatting -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"> <!-- Toastify CSS for notifications -->
     <audio id="alarm" src="http://soundbible.com/grab.php?id=1766&type=mp3"></audio> <!-- Audio element for an alarm sound -->
+    <button id="turnOffAlarmButton" onclick="turnOffAlarm()" class="btn btn-warning" style="position: fixed; top: 80px; right: 10px; z-index: 1001; display: none;">Turn Off Alarm</button> <!-- Button to turn off alarm, initially hidden -->
 
     <style>
         /* Custom navigation bar styling */
@@ -353,6 +354,7 @@ html {
 <!-- Section 8: Post‑Test -->
 <section class="Posttest" id="Posttest">
     <p id="posttestTimer"></p>
+    <p><b>Important Reminder:</b> Your performance in this Post-Test will determine your probability of receiving an <b>Amazon gift card</b>. All the best!</p>
     <p>You will now take a Post‑Test! Before starting, note the following requirements:</p>
 
     <p>
@@ -568,11 +570,19 @@ html {
         }
     }
 
-    // The body onload="setAllLinks()" is already present, so explicit window.onload is not strictly needed
-    // unless there are conflicts or multiple onload functions.
-    // window.onload = function() {
-    //     setAllLinks();
-    //     // Any other onload initializations
-    // };
+    // Function to turn off the alarm
+    function turnOffAlarm() {
+        var alarmSound = document.getElementById('alarm');
+        var turnOffButton = document.getElementById('turnOffAlarmButton');
+        if (alarmSound) {
+            alarmSound.pause(); // Pause the sound
+            alarmSound.currentTime = 0; // Reset the sound to the beginning
+        }
+        if (turnOffButton) {
+            turnOffButton.style.display = 'none'; // Hide the button
+        }
+    }
+
+    
 </script>
 </html>
