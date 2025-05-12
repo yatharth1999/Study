@@ -1,6 +1,6 @@
-<html lang="en">
-
-<head> <!-- It's good practice to have meta, title, links within head -->
+html {
+    scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+}
     <meta charset="utf-8"> <!-- Specifies the character encoding for the HTML document -->
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Configures the viewport for responsive design -->
 
@@ -61,8 +61,8 @@
         /* Styling for the main content box */
         .box {
             width: 80%; /* Sets the width of the content box */
-            margin: 20px auto; /* Centers the box horizontally and adds top/bottom margin */
-            padding: 20px; /* Adds internal spacing within the box */
+            margin: 40px auto; /* Centers the box horizontally and adds top/bottom margin */
+            padding: 40px; /* Adds internal spacing within the box */
             border: 1px solid #ccc; /* Adds a light gray border to the box */
             border-radius: 8px; /* Rounds the corners of the box */
             background-color: #f9f9f9; /* Light background color for the box */
@@ -98,15 +98,15 @@
 <!-- Custom Navigation Bar -->
 <div class="custom-nav">
     <a href="#Name" id="nav-name" data-subtitle="Enter your name">1/10 Name Entry</a>
-    <a href="#Consent" id="nav-consent" data-subtitle="Give consent">2/10 Consent</a>
-    <a href="#Demographics" id="nav-demographics" data-subtitle="Personal info">3/10 Demographics</a>
-    <a href="#Rules" id="nav-rules" data-subtitle="Study rules">4/10 Overview</a>
+    <a href="#Consent" id="nav-consent" data-subtitle="Give consent (3 min)">2/10 Consent</a>
+    <a href="#Demographics" id="nav-demographics" data-subtitle="Personal info (2 min)">3/10 Demographics</a>
+    <a href="#Rules" id="nav-rules" data-subtitle="Study rules (15 min)">4/10 Overview</a>
     <a href="#Pretest" id="nav-pretest" data-subtitle="Initial test (15 min)">5/10 Pretest</a>
     <a href="#Training1" id="nav-training1" data-subtitle="First training session (15 min)">6/10 Training 1</a>
-    <a href="#Usability" id="nav-usability" data-subtitle="Feedback survey">7/10 Learning Survey</a>
+    <a href="#Usability" id="nav-usability" data-subtitle="Feedback survey (5 min)">7/10 Learning Survey</a>
     <a href="#Posttest" id="nav-posttest" data-subtitle="Final test (15 min)">8/10 Posttest</a>
     <a href="#Training2" id="nav-training2" data-subtitle="Second training session (15 min)">9/10 Training 2</a>
-    <a href="#Comparison1" id="nav-comparison1" data-subtitle="Compare results">10/10 Comparison</a>
+    <a href="#Comparison1" id="nav-comparison1" data-subtitle="Compare results (5 min)">10/10 Comparison</a>
 </div>
 <!-- Main Content Container -->
 <div class ="box">
@@ -125,19 +125,20 @@
     <section class="Name" id="Name"> <!-- 'Name' section for user login -->
         <p>Please enter the case-sensitive username/alias given to you in the entry field below, <br />
             and then press the <q>Submit Name</q> button.</p>
-        <p><form onsubmit="event.preventDefault(); checkUser('username', 'invalid', 'Name', 'Consent');"> <!-- Form for username input -->
+        <p><form onsubmit="event.preventDefault(); checkUser('username', 'invalid', 'Name', 'Consent'); startTimer(3, 'consentTimer');"> <!-- Form for username input -->
         <div class="form-group">
             <label for="username">Username/Alias:</label>
             <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter username"> <!-- Username input field -->
         </div>
     </form> </p>
         <p><span class="invalid" id="invalid">Invalid username/alias.</span></p> <!-- Error message for invalid username -->
-        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent');"> Submit Name</button> <!-- Button to submit username -->
+        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent'); startTimer(3, 'consentTimer');"> Submit Name</button> <!-- Button to submit username -->
     </section>
 <!-- End of Student Login Section -->
 
 <!-- Section 2: Consent Form -->
     <section class="Consent" id="Consent"> <!-- 'Consent' section -->
+        <p id="consentTimer"></p> <!-- Timer display for Consent section -->
         <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
         <p>Provide consent by reading and filling out the consent form embedded below.</p>
         <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_860VF6UNXd0Gksu" style="border:0"></iframe> <!-- Embedded Qualtrics consent form -->
@@ -157,12 +158,13 @@
             The study will take approximately <b> 90 minutes</b>.
         </p>
         <!-- Button to proceed to the next section, checks for consent form submission -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('consentFormSubmittedCheck', 'consentErrorMsg', function() { nextSection('Consent','Demographics'); });"> Next (2/10)</button>
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('consentFormSubmittedCheck', 'consentErrorMsg', function() { stopTimer(); nextSection('Consent','Demographics'); startTimer(2, 'demographicsTimer'); });"> Next (2/10)</button>
     </section>
 <!-- End of Consent Form Section -->
 
 <!-- Section 3: Demographics Page -->
     <section class="Demographics" id="Demographics"> <!-- 'Demographics' section -->
+        <p id="demographicsTimer"></p> <!-- Timer display for Demographics section -->
         <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
         <p>Tell us a little about yourself by filling out the survey embedded below.</p>
         <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_8raJG7XkSbZfICG" style="border:0"></iframe> <!-- Embedded Qualtrics demographics form -->
@@ -177,9 +179,9 @@
         </div>
         <p id="demographicsErrorMsg" style="color: red; display: none;">Please confirm you have submitted the form by checking the box above.</p> <!-- Error message for demographics confirmation -->
 
-        <button type="button" class="btn btn-primary" onclick="nextSection('Demographics', 'Consent', true);  ">Back</button> <!-- Button to go back to the previous section -->
+        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics', 'Consent', true); startTimer(3, 'consentTimer');">Back</button> <!-- Button to go back to the previous section -->
         <!-- Button to proceed, checks for demographics form submission and starts a timer -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('demographicsFormSubmittedCheck', 'demographicsErrorMsg', function() { nextSection('Demographics','Rules'); startTimer(20, 'timer'); });">Next (3/10) </button>
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('demographicsFormSubmittedCheck', 'demographicsErrorMsg', function() { stopTimer(); nextSection('Demographics','Rules'); startTimer(15, 'timer'); });">Next (3/10) </button>
     </section>
 <!-- End of Demographics Page Section -->
  
@@ -188,7 +190,7 @@
     <section class="Rules" id="Rules">
         <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
         <!-- Countdown timer -->
-        <p id="timer">10:00</p>
+        <p id="timer"></p>
     
         <!-- New introductory text -->
         <p>
@@ -225,245 +227,229 @@
     
         <!-- Navigation buttons -->
         <button type="button" class="btn btn-primary"
-                onclick="nextSection('Rules','Demographics', true); stopTimer();">
+                onclick="stopTimer(); nextSection('Rules','Demographics', true); startTimer(2, 'demographicsTimer');">
             Back
         </button>
         <button type="button" class="btn btn-primary"
-                onclick="nextSection('Rules','Pretest'); stopTimer();">
+                onclick="nextSection('Rules','Pretest'); stopTimer(); startTimer(15, 'Pretesttimer');">
             Next&nbsp;(4/10)
         </button>
     </section>
 <!-- End of Rules Page Section -->
 
-<!-- Section 5: Pretest Page -->
-    <section class="Pretest" id="Pretest">
-        <p>
-            You will now take a Pre-Test! Before starting, note the following requirements:
-        </p>
-        
-        <p>1. Launch the SeaCraft App from your desktop <br>           2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br> 
-            3. Use access code: <b>ABC</b>
-        </p>
-        
-    
-        <p><b>Important:</b> Ensure you enter correct access code <b>ABC</b> and username <b><span class="username-display"></span></b> when starting the application</p>
-    
-        <p>
-            A 15-minute countdown timer will automatically begin when the quiz starts.<br>
-            Try to complete all questions within the time limit.
-        </p>
-        <p>
-            <br/> If you experience any issues:<br> 
-            1. Verify you used Correct access code <b>ABC</b><br/>
-            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
-            3. If problems persist, alert a researcher
-        </p>
-       
-        <p> 
-            When completed, the app will display a completion screen. Click on the exit button and come back to this webpage.
-        </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); startTimer(10, 'timer');">Back</button>
-        <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false);"> Next (5/10) </button>
-    </section>
-<!-- End of Pretest Page Section -->
+<!-- Section 5: Pre‑Test Page -->
+<section class="Pretest" id="Pretest">
+    <p id="Pretesttimer"></p>
+    <p>You will now take a Pre‑Test! Before starting, note the following requirements:</p>
 
+    <p>
+        1. Launch the SeaCraft App from your desktop.<br>
+        2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
+        3. When asked for an access code, use: <b>ABC</b>
+    </p>
+
+    <p><b>Important:</b> Ensure you enter the correct access code <b>ABC</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
+
+    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this section within 15 minutes.</p>
+    <p>
+        If you experience any issues:<br>
+        1. Verify you used the correct access code <b>ABC</b>.<br>
+        2. Verify you used the correct username: <b><span class="username-display"></span></b>.<br>
+        3. If problems persist, alert a researcher.
+    </p>
+
+    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+
+    <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); stopTimer(); startTimer(15, 'timer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false); stopTimer(); startTimer(15,'Trainingtimer');">Next (5/10)</button>
+</section>
+<!-- End of Pre‑Test Page -->
 
 <!-- TRAINING SECTIONS START -->
-<!-- Section 6a: Training 1 (Yellow Non Adaptive) -->
-    <section class="Training1" id="Training1"> <!-- 'Training1' section (Yellow group) -->
-        <p>
-            You have been assigned the <b>YELLOW</b> group. <br />
-        </p>
-        <p>
-            In this phase of the study, you have 15 minutes to learn more about the Tactics in simulated environments. Before you begin, you will need to:
-        </p>
-        <p>1. Open the SeaCraft App on your desktop <br />
-            2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
-            3. When asked for an access code, use: <b>BBB</b> <br /> <!-- Access code for Training 1 -->
-            A timer will be available to help you track your 15-minute session.
-        </p>
-        <p><b>Important:</b> Ensure you use the access code <b>BBB</b> and username <b><span class="username-display"></span></b> when prompted during launch</p>
-        <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA"
-                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
-                <p>
-                    <br/> If you experience any issues:<br />
-                    1. Verify you used Correct access code <b>BBB</b><br/>
-                    2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
-                    3. If problems persist, alert a researcher
-                </p>
-        <p>
-            When completed, the app will display a completion screen. Click on the exit button and come back to this webpage. If you experience any issues:<br />
-        </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true);">Back</button> <!-- Button to go back -->
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability');">Next (6/10)</button> <!-- Button to proceed to Usability survey -->
-    </section>
-<!-- End of Training 1 Section -->
+<!-- Section 6a: Training 1 (Yellow — Non‑Adaptive) -->
+<section class="Training1" id="Training1">
+    <p id="Trainingtimer"></p>
+    <p>You have been assigned to the <b>YELLOW</b> group.</p>
 
-<!-- Section 6b: Training 2 (Blue Adaptive Training) -->
-    <section class="Training2" id="Training2"> <!-- 'Training2' section (Blue group) -->
-        <p>You have been assigned the <b>BLUE</b> group.</p>
-        <p>
-            In this phase of the study, you have 15 minutes to learn more about the Tactics in simulated environments. Before you begin, you will need to:
-        </p>
-        <p>1. Open the SeaCraft App on your desktop <br />
-            2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
-            3. When asked for an access code, use: <b>AAA</b><br /> <!-- Access code for Training 2 -->
-            A timer will be available to help you track your 15-minute session.
-        </p>
-        
-        <p><b>Important:</b> Ensure you use the access code <b>AAA</b> and username <b><span class="username-display"></span></b> when prompted during launch</p>
-    
-        <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA"
-                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
+    <p>In this phase of the study you have 15 minutes to learn more about the tactics in simulated environments. Before you begin:</p>
+    <p>
+        1. Open the SeaCraft App on your desktop.<br>
+        2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
+        3. When asked for an access code, use: <b>BBB</b>
+    </p>
 
-        <p>
-            <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>AAA</b><br/>
-            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
-            3. If problems persist, alert a researcher
-        </p>
-    
-        <p>
-            After 15 minutes, when the timer expires or the simulation completes, close the application window. 
-            You may then proceed to the next section.
-        </p>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true);  ">Back</button> <!-- Button to go back -->
-        <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability');"> Next (6/10) </button> <!-- Button to proceed to Usability survey -->
-    </section>
-<!-- End of Training 2 Section -->
+    <p><b>Important:</b> Ensure you use the access code <b>BBB</b> and username <b><span class="username-display"></span></b> when prompted during launch.</p>
 
-<!-- Section 7: Usability Survey Page (after first training) -->
-<section class="Usability" id="Usability"> <!-- 'Usability' survey section -->
+    <p>A 15‑minute timer is running at the top of the page. Please complete this training session within the allotted time.</p>
+
+    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+    <p>
+        If you experience any issues:<br>
+        1. Verify you used the correct access code <b>BBB</b>.<br>
+        2. Verify you used the correct username: <b><span class="username-display"></span></b>.<br>
+        3. If problems persist, alert a researcher.
+    </p>
+
+    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability'); stopTimer(); startTimer(5,'surveyTimer');">Next (6/10)</button>
+</section>
+<!-- End of Training 1 -->
+
+<!-- Section 6b: Training 2 (Blue — Adaptive) -->
+<section class="Training2" id="Training2">
+    <p id="Trainingtimer"></p>
+    <p>You have been assigned to the <b>BLUE</b> group.</p>
+
+    <p>In this phase of the study you have 15 minutes to learn more about the tactics in simulated environments. Before you begin:</p>
+    <p>
+        1. Open the SeaCraft App on your desktop.<br>
+        2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
+        3. When asked for an access code, use: <b>AAA</b>
+    </p>
+
+    <p><b>Important:</b> Ensure you use the access code <b>AAA</b> and username <b><span class="username-display"></span></b> when prompted during launch.</p>
+
+    <p>A 15‑minute timer is running at the top of the page. Please complete this training session within the allotted time.</p>
+
+    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+    <p>
+        If you experience any issues:<br>
+        1. Verify you used the correct access code <b>AAA</b>.<br>
+        2. Verify you used the correct username: <b><span class="username-display"></span></b>.<br>
+        3. If problems persist, alert a researcher.
+    </p>
+
+    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability'); stopTimer(); startTimer(5,'surveyTimer');">Next (6/10)</button>
+</section>
+<!-- End of Training 2 -->
+
+<!-- Section 7: Usability Survey -->
+<section class="Usability" id="Usability">
+    <p id="surveyTimer"></p>
+    <p>Your username: <b><span class="username-display"></span></b></p>
     <p>Tell us about your experience with learning by filling out the survey embedded below.</p>
-    <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_40lvj72JnIx3Tca" style="border:0"></iframe> <!-- Embedded Qualtrics usability survey -->
-    <p>When you submit the survey, you can come back here and click Next </p>
 
-    <!-- Confirmation checkbox for usability survey submission -->
+    <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_40lvj72JnIx3Tca" style="border:0"></iframe>
+    <p>When you submit the survey, return here and click <i>Next</i>.</p>
+
     <div class="form-check mt-2 mb-2">
         <input class="form-check-input" type="checkbox" value="" id="usabilityFormSubmittedCheck">
-        <label class="form-check-label" for="usabilityFormSubmittedCheck">
-            I have submitted the survey.
-        </label>
+        <label class="form-check-label" for="usabilityFormSubmittedCheck">I have submitted the survey.</label>
     </div>
-    <p id="usabilityErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for usability survey confirmation -->
+    <p id="usabilityErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p>
 
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true);  ">Back</button> <!-- Button to go back to the previous training section (randomly determined) -->
-    <!-- Button to proceed, checks for survey submission -->
-    <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('usabilityFormSubmittedCheck', 'usabilityErrorMsg', function() { nextSection('Usability','Posttest'); });">Next (7/10) </button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true); stopTimer(); startTimer(15, 'Trainingtimer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('usabilityFormSubmittedCheck', 'usabilityErrorMsg', function() { nextSection('Usability','Posttest'); stopTimer(); startTimer(15,'posttestTimer'); });">Next (7/10)</button>
 </section>
-<!-- End of Usability Survey Section -->
+<!-- End of Usability Survey -->
 
-<!-- Section 8: Post Test Page -->
-<section class="Posttest" id="Posttest"> <!-- 'Posttest' section -->
-        <p>
-           You will now take a Post-Test! Before starting, note the following requirements:
-        </p>
-        <p>1. Launch the SeaCraft App from your desktop again.<br />
-            2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
-            3. Use access code: <b>XYZ</b> <!-- Access code for Posttest -->
-        </p>
+<!-- Section 8: Post‑Test -->
+<section class="Posttest" id="Posttest">
+    <p id="posttestTimer"></p>
+    <p>You will now take a Post‑Test! Before starting, note the following requirements:</p>
 
-        <p><b>Important:</b> Ensure you enter code <b>XYZ</b> and username <b><span class="username-display"></span></b> when starting the application</p>
-        <p>
-            <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>XYZ</b><br/>
-            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
-            3. If problems persist, alert a researcher
-        </p>
-    
-        <p>
-            After 15 minutes, when the timer expires or the simulation completes, close the application window. 
-            You may then proceed to the next section.
-        </p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true);  ">Back</button> <!-- Button to go back -->
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false);">Next (8/10)</button> <!-- Button to proceed to a random alternative training section -->
-</section>
-<!-- End of Post Test Page Section -->
-
-<!-- Section 9a: Alternative Training Page 1 -->
-<section class="Alternative1" id="Alternative1"> <!-- 'Alternative1' training section -->
     <p>
-        You will now use a different training method <b> Blue </b>, for 15 minutes.
-    </p>
-    <p>
-        1. Once again open the SeaCraft App from your desktop <br />
-        2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
-        3. When asked for an access code, use: <b>AAA</b> <br /> <!-- Access code for Alternative Training 1 (Blue) -->
+        1. Launch the SeaCraft App from your desktop.<br>
+        2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
+        3. When asked for an access code, use: <b>XYZ</b>
     </p>
 
-    <p><b>Important:</b> Ensure you enter code <b>AAA</b> and username <b><span class="username-display"></span></b> when starting the application</p>
-    <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
-    
-        <p>
-            A 15-minute countdown timer will automatically begin when the quiz starts.<br />
-            Try to complete all questions within the time limit.
-        </p>
-        <p>
-            <br/> If you experience any issues:<br />
-            1. Verify you used Correct access code <b>AAA</b><br/>
-            2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
-            3. If problems persist, alert a researcher
-        </p>
-        <p>
-            When completed, the app will display a completion screen. Click on the exit button and come back to this webpage.<br />
-        </p>
+    <p><b>Important:</b> Ensure you enter the correct access code <b>XYZ</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
+    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this section within 15 minutes.</p>
+    <p>
+        If you experience any issues:<br>
+        1. Verify you used the correct access code <b>XYZ</b>.<br>
+        2. Verify you used the correct username: <b><span class="username-display"></span></b>.<br>
+        3. If problems persist, alert a researcher.
+    </p>
 
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true);  ">Back</button> <!-- Button to go back -->
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1');"> Next (9/10)</button> <!-- Button to proceed to Comparison 1 -->
+    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true); stopTimer(); startTimer(5, 'surveyTimer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false); stopTimer(); startTimer(15,'alternativeTrainingTimer');">Next (8/10)</button>
 </section>
-<!-- End of Alternative Training Page 1 Section -->
+<!-- End of Post‑Test -->
 
+<!-- Section 9a: Alternative Training 1 (Blue) -->
+<section class="Alternative1" id="Alternative1">
+    <p id="alternativeTrainingTimer"></p>
+    <p>You will now use a different training method: <b>BLUE</b> group, for 15 minutes.</p>
 
-<!-- Section 9b: Alternative Training Page 2 -->
-<section class="Alternative2" id="Alternative2"> <!-- 'Alternative2' training section -->
-        <p>
-            You will now use a different training method <b> Yellow </b> 
-            provided by the link, for 15 minutes.
-        </p>
-            <p>
-                1. Once again open the SeaCraft App from your desktop <br />
-                2. Enter your assigned case-sensitive username/alias  <b><span class="username-display"></span></b><br />
-                3. When asked for an access code, use: <b>BBB</b> <br /> <!-- Access code for Alternative Training 2 (Yellow) -->
-            </p>
+    <p>
+        1. Open the SeaCraft App from your desktop.<br>
+        2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
+        3. When asked for an access code, use: <b>AAA</b>
+    </p>
 
-            <p><b>Important:</b> Ensure you enter code <b>BBB</b> and username <b><span class="username-display"></span></b> when starting the application</p>
-            <p> The <b>optional</b> tutorial below shows how to use this simulation </p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> <!-- Embedded YouTube tutorial -->
-            
-                <p>
-                    A 15-minute countdown timer will automatically begin when the quiz starts.<br />
-                    Try to complete all questions within the time limit.
-                </p>
-                <p>
-                    <br/> If you experience any issues:<br />
-                    1. Verify you used Correct access code <b>BBB</b><br/>
-                    2. Verify you used the correct username: <b><span class="username-display"></span> </b><br/>
-                    3. If problems persist, alert a researcher
-                </p>
-                <p>
-                    When completed, the app will display a completion screen. Click on the exit button and come back to this webpage.<br />
-                </p>
-        
-            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Posttest', true);  ">Back</button> <!-- Button to go back -->
-            <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Comparison2');"> Next (9/10)</button> <!-- Button to proceed to Comparison 2 -->
-        </section>
-    <!-- Removed an extra closing </section> tag that was here -->
+    <p><b>Important:</b> Ensure you enter the correct access code <b>AAA</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
+
+    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this training within 15 minutes.</p>
+
+    <p>
+        If you experience any issues:<br>
+        1. Verify you used the correct access code <b>AAA</b>.<br>
+        2. Verify you used the correct username: <b><span class="username-display"></span></b>.<br>
+        3. If problems persist, alert a researcher.
+    </p>
+
+    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1'); stopTimer(); startTimer(5,'comparitiveTimer');">Next (9/10)</button>
+</section>
+<!-- End of Alternative Training 1 -->
+
+<!-- Section 9b: Alternative Training 2 (Yellow) -->
+<section class="Alternative2" id="Alternative2">
+    <p id="alternativeTrainingTimer"></p>
+    <p>You will now use a different training method: <b>YELLOW</b> group, for 15 minutes.</p>
+
+    <p>
+        1. Open the SeaCraft App from your desktop.<br>
+        2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
+        3. When asked for an access code, use: <b>BBB</b>
+    </p>
+
+    <p><b>Important:</b> Ensure you enter the correct access code <b>BBB</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
+
+    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this training within 15 minutes.</p>
+
+    <p>
+        If you experience any issues:<br>
+        1. Verify you used the correct access code <b>BBB</b>.<br>
+        2. Verify you used the correct username: <b><span class="username-display"></span></b>.<br>
+        3. If problems persist, alert a researcher.
+    </p>
+
+    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Comparison2'); stopTimer(); startTimer(10,'comparitiveTimer');">Next (9/10)</button>
+</section>
+<!-- End of Alternative Training 2 -->
 
     <!-- Section 10a: Comparison Page 1 -->
     <section class="Comparison1" id="Comparison1"> <!-- 'Comparison1' survey section -->
+        <p id = "comparitiveTimer"></p>
+        <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
         <p>
             Compare the
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            <b>yellow</b> (RAFT) <!-- Styling for 'yellow' (RAFT) -->
+            <b>Yellow</b> (RAFT) <!-- Styling for 'yellow' (RAFT) -->
         </span>
             and
             <span style="color: #1e88e5;">
-            <b>blue</b> (NAT) <!-- Styling for 'blue' (NAT) -->
+            <b>Blue</b> (NAT) <!-- Styling for 'blue' (NAT) -->
         </span>
             learning alternatives using the survey embedded below.
         </p>
@@ -491,13 +477,15 @@
         </div>
         <p id="comparison1ErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for comparison survey 1 confirmation -->
 
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true);  ">Back</button> <!-- Button to go back -->
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');">Back</button> <!-- Button to go back -->
         <!-- Button to proceed, checks for survey submission -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison1FormSubmittedCheck', 'comparison1ErrorMsg', function() { nextSection('Comparison1','Finish'); });">Next (10/10)</button>
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison1FormSubmittedCheck', 'comparison1ErrorMsg', function() { stopTimer(); nextSection('Comparison1','Finish'); });">Next (10/10)</button>
     </section>
    
     <!-- Section 10b: Comparison Page 2 -->
     <section class="Comparison2" id="Comparison2"> <!-- 'Comparison2' survey section -->
+        <p id="comparitiveTimer"></p> <!-- Added timer display element -->
+        <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
         <p>
             Compare the
             <span style="color: #1e88e5;">
@@ -533,9 +521,9 @@
         </div>
         <p id="comparison2ErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for comparison survey 2 confirmation -->
 
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true);  ">Back</button> <!-- Button to go back -->
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');">Back</button> <!-- Button to go back -->
         <!-- Button to proceed, checks for survey submission -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison2FormSubmittedCheck', 'comparison2ErrorMsg', function() { nextSection('Comparison2','Finish'); });">Next (10/10)</button>
+        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison2FormSubmittedCheck', 'comparison2ErrorMsg', function() { stopTimer(); nextSection('Comparison2','Finish'); });">Next (10/10)</button>
     </section>
 
 

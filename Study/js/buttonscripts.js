@@ -9,6 +9,7 @@ if (navLinks.length > 0) {
 }
 
 function nextSection(hide, show, isBack=false) {
+    window.scrollTo(0, 0); // Scroll to the top of the page
     document.getElementById(hide).style.display = "none";
     document.getElementById(show).style.display = "inline";
 

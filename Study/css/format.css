@@ -50,7 +50,7 @@ button:hover {
 .box {
   text-align: center;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 60px auto; /* Increased top and bottom margin from 40px to 60px */
   padding: 20px 40px;
   border-radius: 10px;
   border: solid 2px #0288d1; /* Medium blue */
@@ -92,3 +92,4 @@ button:hover {
   color: #d32f2f; /* Bright red for warnings */
   font-family: 'Helvetica', sans-serif;
 }
+
