@@ -60,7 +60,7 @@ button:hover {
 }
 
 .redbox {
-  width: 150px; /* Increased width for better visibility */
+  width: 250px; /* Increased width for better visibility */
   height: 40px; /* Increased height */
   margin: 10px auto;
   border: solid 2px #f9a825; /* Golden yellow border */
@@ -74,7 +74,7 @@ button:hover {
 
 
 .bluebox {
-  width: 150px; /* Increased width */
+  width: 250px; /* Increased width */
   height: 40px; /* Increased height */
   margin: 10px auto;
   border: solid 2px #1565c0; /* Blue border */
@@ -93,3 +93,43 @@ button:hover {
   font-family: 'Helvetica', sans-serif;
 }
 
+/* --- styles for the call-out box --- */
+.qualtrics-submit-reminder{
+  margin-top:1rem;
+  padding:1rem;
+  border:2px dashed #b91830;
+  border-radius:.75rem;
+  background: #ffebee;     /* very light blue */
+  text-align:center;
+}
+
+/* --- replica of the Qualtrics button --- */
+.qualtrics-submit-btn{
+  border:none;
+  color:#fff;
+  font-family:Poppins,Arial,sans-serif;
+  font-size:18px;
+  font-weight:500;
+  padding:8px 20px;
+  border-radius:4px;
+  cursor:default;         /* not clickable */
+  margin:2px;
+  background:#007ac0;     /* same blue you posted */
+  pointer-events:none;    /* guarantees no accidental click */
+  line-height:1;
+  width:94px;             /* matches typical Qualtrics width; adjust if needed */
+}
+
+/* optional focus outline for accessibility (even though it's disabled) */
+.qualtrics-submit-btn:focus{
+  outline:2px solid #fff;
+  outline-offset:2px;
+}
+.current-section-heading {
+  font-family: 'Helvetica', sans-serif;
+  color: #1a237e; /* Dark blue, consistent with h1 */
+  font-size: 28px; /* Slightly smaller than h1 */
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-align: center; /* Center the heading */
+}

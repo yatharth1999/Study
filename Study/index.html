@@ -5,7 +5,7 @@ html {
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Configures the viewport for responsive design -->
 
     
-    <title>TACT VS NAT</title> <!-- Sets the title of the HTML document, displayed in the browser's title bar or tab -->
+    <title>TACT VS NACT</title> <!-- Sets the title of the HTML document, displayed in the browser's title bar or tab -->
     <!-- External CSS stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> <!-- Bootstrap CSS for styling -->
     <link rel="stylesheet" href="css/sections.css"> <!-- Custom CSS for sections -->
@@ -17,6 +17,7 @@ html {
     <style>
         /* Custom navigation bar styling */
         .custom-nav {
+            text-align: center;
             display: flex; /* Enables flexbox layout */
             justify-content: space-around; /* Distributes items evenly with space around them */
             background-color: #333; /* Dark background color for the navbar */
@@ -53,6 +54,7 @@ html {
             font-size: 0.8em; /* Smaller font size for the subtitle */
             color: #bfbfbf; /* Light gray color for subtitle text */
             margin-top: 5px; /* Space above the subtitle */
+            text-align: center; /* Centers the subtitle text */
         }
 
         body {
@@ -98,33 +100,33 @@ html {
 <body onload="setAllLinks()"> <!-- Calls setAllLinks function when the body finishes loading -->
 <!-- Custom Navigation Bar -->
 <div class="custom-nav">
-    <a href="#Name" id="nav-name" data-subtitle="Enter your name">1/10 Name Entry</a>
-    <a href="#Consent" id="nav-consent" data-subtitle="Give consent (3 min)">2/10 Consent</a>
-    <a href="#Demographics" id="nav-demographics" data-subtitle="Personal info (2 min)">3/10 Demographics</a>
-    <a href="#Rules" id="nav-rules" data-subtitle="Study rules (15 min)">4/10 Overview</a>
-    <a href="#Pretest" id="nav-pretest" data-subtitle="Initial test (15 min)">5/10 Pretest</a>
-    <a href="#Training1" id="nav-training1" data-subtitle="First training session (15 min)">6/10 Training 1</a>
-    <a href="#Usability" id="nav-usability" data-subtitle="Feedback survey (5 min)">7/10 Learning Survey</a>
-    <a href="#Posttest" id="nav-posttest" data-subtitle="Final test (15 min)">8/10 Posttest</a>
-    <a href="#Training2" id="nav-training2" data-subtitle="Second training session (15 min)">9/10 Training 2</a>
-    <a href="#Comparison1" id="nav-comparison1" data-subtitle="Compare results (5 min)">10/10 Comparison</a>
+    <a href="#Name" id="nav-name" data-subtitle="1 min">1/10<br>Name</br> </a>
+    <a href="#Consent" id="nav-consent" data-subtitle="3 min">2/10 <br>Consent</a>
+    <a href="#Demographics" id="nav-demographics" data-subtitle="2 min">3/10 <br>Demographics</a>
+    <a href="#Rules" id="nav-rules" data-subtitle="15 min">4/10 <br>Overview</a>
+    <a href="#Pretest" id="nav-pretest" data-subtitle="15 min">5/10 <br>SeaCraft 1</a>
+    <a href="#Training1" id="nav-training1" data-subtitle="15 min">6/10 <br>Training 1</a>
+    <a href="#Usability" id="nav-usability" data-subtitle="5 min">7/10 <br>Survey</a>
+    <a href="#Posttest" id="nav-posttest" data-subtitle="15 min">8/10 <br>SeaCraft 2</a>
+    <a href="#Training2" id="nav-training2" data-subtitle="15 min">9/10 <br>Training 2</a>
+    <a href="#Comparison1" id="nav-comparison1" data-subtitle="5 min">10/10 <br>Comparison</a>
 </div>
 <!-- Main Content Container -->
 <div class ="box">
 
-    <h1>Study</h1> <!-- Main heading for the study -->
+    <h1 id="current-section-heading"></h1>
     <!-- Example colored boxes (likely for demonstration or specific UI elements) -->
     <div class="redbox" id="redbox">
-        <p>Yellow</p>
+        <p>You are in <q>Yellow</q> group.</p>
     </div>
 
     <div class="bluebox" id="bluebox">
-        <p>Blue</p>
+        <p>You are in <q>Blue</q> group.</p>
     </div>
 
 <!-- Section 1: Student Login -->
     <section class="Name" id="Name"> <!-- 'Name' section for user login -->
-        <p>Please enter the case-sensitive username/alias given to you in the entry field below, <br />
+        <p>Please enter your case-sensitive username/alias below, <br />
             and then press the <q>Submit Name</q> button.</p>
         <p><form onsubmit="event.preventDefault(); checkUser('username', 'invalid', 'Name', 'Consent'); startTimer(3, 'consentTimer');"> <!-- Form for username input -->
         <div class="form-group">
@@ -141,25 +143,31 @@ html {
     <section class="Consent" id="Consent"> <!-- 'Consent' section -->
         <p id="consentTimer"></p> <!-- Timer display for Consent section -->
         <p>Your username: <b><span class="username-display"></span></b></p> <!-- Displays the entered username -->
-        <p>Provide consent by reading and filling out the consent form embedded below.</p>
+        <p>Provide consent by reading, understanding, and then clicking "I agree" and submitting the form below. <br />
+            Consent is required to participate in the study. <br />
+            If you have any questions, please ask a researcher.</p>
         <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_860VF6UNXd0Gksu" style="border:0"></iframe> <!-- Embedded Qualtrics consent form -->
-        <p>Once you've filled it out and submitted your consent, you can come back here, <br />
-            then, and only then, click the button below to move on. </p>
+       
         
-        <!-- Confirmation checkbox for consent form submission -->
-        <div class="form-check mt-2 mb-2">
-            <input class="form-check-input" type="checkbox" value="" id="consentFormSubmittedCheck">
-            <label class="form-check-label" for="consentFormSubmittedCheck">
-                I have submitted the consent form.
-            </label>
+        <p>Once you've submitted your consent, click the <q>Next</q> button below to move on. </p>
+        <div class="qualtrics-submit-reminder">
+            <p style="color: #d32f2f"> 
+                <strong>Before you continue:</strong>
+                please press the blue <em>Submit</em> button inside the survey
+                (it looks like the one below) before you click <q>Next</q> below.
+            </p>
+                
+
+            <!-- CSS-driven replica of the Qualtrics Submit button -->
+            <button
+                class="qualtrics-submit-btn"
+                aria-label="Example of the Qualtrics Submit button"
+                disabled>
+                &rarr;   <!-- right-arrow glyph -->
+            </button>
         </div>
-        <p id="consentErrorMsg" style="color: red; display: none;">Please confirm you have submitted the form by checking the box above.</p> <!-- Error message for consent confirmation -->
-        
-        <p style="color: #d32f2f; background-color: #ffebee; padding: 10px; border-radius: 5px;"> <!-- Important note about study duration -->
-            The study will take approximately <b> 90 minutes</b>.
-        </p>
         <!-- Button to proceed to the next section, checks for consent form submission -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('consentFormSubmittedCheck', 'consentErrorMsg', function() { stopTimer(); nextSection('Consent','Demographics'); startTimer(2, 'demographicsTimer'); });"> Next (2/10)</button>
+        <button type="button" class="btn btn-primary" onclick=" stopTimer(); nextSection('Consent','Demographics'); startTimer(2, 'demographicsTimer'); "> Next (2/10)</button>
     </section>
 <!-- End of Consent Form Section -->
 
@@ -172,17 +180,27 @@ html {
         <p>After you submit the above form, click the <q>Next</q> button below to continue </p>
         
         <!-- Confirmation checkbox for demographics form submission -->
-        <div class="form-check mt-2 mb-2">
-            <input class="form-check-input" type="checkbox" value="" id="demographicsFormSubmittedCheck">
-            <label class="form-check-label" for="demographicsFormSubmittedCheck">
-                I have submitted the demographics form.
-            </label>
+         <div class="qualtrics-submit-reminder">
+            <p style="color: #d32f2f"> 
+                <strong>Before you continue:</strong>
+                please press the blue <em>Submit</em> button inside the survey
+                (it looks like the one below) before you click <q>Next</q> below.
+            </p>
+                
+
+            <!-- CSS-driven replica of the Qualtrics Submit button -->
+            <button
+                class="qualtrics-submit-btn"
+                aria-label="Example of the Qualtrics Submit button"
+                disabled>
+                &rarr;   <!-- right-arrow glyph -->
+            </button>
         </div>
         <p id="demographicsErrorMsg" style="color: red; display: none;">Please confirm you have submitted the form by checking the box above.</p> <!-- Error message for demographics confirmation -->
 
         <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics', 'Consent', true); startTimer(3, 'consentTimer');">Back</button> <!-- Button to go back to the previous section -->
         <!-- Button to proceed, checks for demographics form submission and starts a timer -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('demographicsFormSubmittedCheck', 'demographicsErrorMsg', function() { stopTimer(); nextSection('Demographics','Rules'); startTimer(15, 'timer'); });">Next (3/10) </button>
+        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics','Rules'); startTimer(15, 'timer'); ">Next (3/10) </button>
     </section>
 <!-- End of Demographics Page Section -->
  
@@ -195,7 +213,7 @@ html {
     
         <!-- New introductory text -->
         <p>
-            Now let's take a few moments to learn about the naval tactical simulation.  
+            Now let's take a few moments to learn about SeaCraft.  
             First, watch the video below—it walks you through the simulation controls step by step.
         </p>
     
@@ -209,10 +227,10 @@ html {
     
         <!-- PDF controls reference -->
         <p>
-            We’ve also attached a concise PDF reference with all the controls for quick lookup:
+            We’ve also attached a concise PDF reference with all controls for reference:
         </p>
         <p>
-            <a href="https://www.cse.unr.edu/~yvohra/Study/SeaCraft_Controls.pdf"
+            <a href="https://www.cse.unr.edu/~yvohra/Study/NavyTac_Controls.pdf"
                target="_blank">
                Simulation Controls Reference (PDF)
             </a>
@@ -222,7 +240,7 @@ html {
     
         <!-- Instructions about time navigation -->
         <p>
-            You should be able to cover everything within the 10-minute window, but feel free to move on sooner.
+            You have 10 minutes but feel free to move on if you finish sooner.
             When you're ready, click <q>Next</q> to continue.
         </p>
     
@@ -241,17 +259,17 @@ html {
 <!-- Section 5: Pre‑Test Page -->
 <section class="Pretest" id="Pretest">
     <p id="Pretesttimer"></p>
-    <p>You will now take a Pre‑Test! Before starting, note the following requirements:</p>
+    <p>You will now "play" the game! To play:</p>
 
     <p>
-        1. Launch the SeaCraft App from your desktop.<br>
+        1. Launch SeaCraft from your desktop.<br>
         2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
         3. When asked for an access code, use: <b>ABC</b>
     </p>
 
     <p><b>Important:</b> Ensure you enter the correct access code <b>ABC</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
 
-    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this section within 15 minutes.</p>
+    <p>We expect many of you to complete the games within 15 minutes, but you can take a little longer.</p>
     <p>
         If you experience any issues:<br>
         1. Verify you used the correct access code <b>ABC</b>.<br>
@@ -259,7 +277,7 @@ html {
         3. If problems persist, alert a researcher.
     </p>
 
-    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <p>When completed, the SeaCraft will display a completion screen. <b>Click the exit button</b> and return to this webpage.</p>
 
     <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); stopTimer(); startTimer(15, 'timer');">Back</button>
     <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false); stopTimer(); startTimer(15,'Trainingtimer');">Next (5/10)</button>
@@ -272,20 +290,21 @@ html {
     <p id="Trainingtimer"></p>
     <p>You have been assigned to the <b>YELLOW</b> group.</p>
 
-    <p>In this phase of the study you have 15 minutes to learn more about the tactics in simulated environments. Before you begin:</p>
+    <p>In this phase of the study you have 15 minutes to learn more about tactics in SeaCraft. Before you begin:</p>
     <p>
-        1. Open the SeaCraft App on your desktop.<br>
+        1. Run SeaCraft on your desktop.<br>
         2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
         3. When asked for an access code, use: <b>BBB</b>
     </p>
 
     <p><b>Important:</b> Ensure you use the access code <b>BBB</b> and username <b><span class="username-display"></span></b> when prompted during launch.</p>
 
-    <p>A 15‑minute timer is running at the top of the page. Please complete this training session within the allotted time.</p>
+    <p>Again try to finish this phase within 15 minutes or sooner.</p>
 
-    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+ <p>Try to finish this phase within 15 minutes or sooner.</p>
 
+    <p>The video tutorial below is the same one from earlier and is provided here 
+    for convenience.</p>
     <p>
         If you experience any issues:<br>
         1. Verify you used the correct access code <b>BBB</b>.<br>
@@ -293,7 +312,7 @@ html {
         3. If problems persist, alert a researcher.
     </p>
 
-    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
     <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');">Back</button>
     <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability'); stopTimer(); startTimer(5,'surveyTimer');">Next (6/10)</button>
 </section>
@@ -304,16 +323,16 @@ html {
     <p id="Trainingtimer"></p>
     <p>You have been assigned to the <b>BLUE</b> group.</p>
 
-    <p>In this phase of the study you have 15 minutes to learn more about the tactics in simulated environments. Before you begin:</p>
+    <p>In this phase of the study you have 15 minutes to learn more about tactics in SeaCraft. Before you begin:</p>
     <p>
-        1. Open the SeaCraft App on your desktop.<br>
+        1. Run SeaCraft on your desktop.<br>
         2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
         3. When asked for an access code, use: <b>AAA</b>
     </p>
 
     <p><b>Important:</b> Ensure you use the access code <b>AAA</b> and username <b><span class="username-display"></span></b> when prompted during launch.</p>
 
-    <p>A 15‑minute timer is running at the top of the page. Please complete this training session within the allotted time.</p>
+    <p>Again try to finish this phase within 15 minutes or sooner.</p>
 
     <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -325,7 +344,7 @@ html {
         3. If problems persist, alert a researcher.
     </p>
 
-    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
     <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');">Back</button>
     <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability'); stopTimer(); startTimer(5,'surveyTimer');">Next (6/10)</button>
 </section>
@@ -335,36 +354,46 @@ html {
 <section class="Usability" id="Usability">
     <p id="surveyTimer"></p>
     <p>Your username: <b><span class="username-display"></span></b></p>
-    <p>Tell us about your experience with learning by filling out the survey embedded below.</p>
+    <p>Tell us about your experience with learning from SeaCraft by filling out the survey embedded below.</p>
 
     <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_40lvj72JnIx3Tca" style="border:0"></iframe>
     <p>When you submit the survey, return here and click <i>Next</i>.</p>
 
-    <div class="form-check mt-2 mb-2">
-        <input class="form-check-input" type="checkbox" value="" id="usabilityFormSubmittedCheck">
-        <label class="form-check-label" for="usabilityFormSubmittedCheck">I have submitted the survey.</label>
-    </div>
-    <p id="usabilityErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p>
+    <div class="qualtrics-submit-reminder">
+            <p style="color: #d32f2f"> 
+                <strong>Before you continue:</strong>
+                please press the blue <em>Submit</em> button inside the survey
+                (it looks like the one below) before you click <q>Next</q> below.
+            </p>
+                
+
+            <!-- CSS-driven replica of the Qualtrics Submit button -->
+            <button
+                class="qualtrics-submit-btn"
+                aria-label="Example of the Qualtrics Submit button"
+                disabled>
+                &rarr;   <!-- right-arrow glyph -->
+            </button>
+        </div>
 
     <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true); stopTimer(); startTimer(15, 'Trainingtimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('usabilityFormSubmittedCheck', 'usabilityErrorMsg', function() { nextSection('Usability','Posttest'); stopTimer(); startTimer(15,'posttestTimer'); });">Next (7/10)</button>
+    <button type="button" class="btn btn-primary" onclick=" nextSection('Usability','Posttest'); stopTimer(); startTimer(15,'posttestTimer');">Next (7/10)</button>
 </section>
 <!-- End of Usability Survey -->
 
 <!-- Section 8: Post‑Test -->
 <section class="Posttest" id="Posttest">
     <p id="posttestTimer"></p>
-    <p><b>Important Reminder:</b> Your performance in this Post-Test will determine your probability of receiving an <b>Amazon gift card</b>. All the best!</p>
-    <p>You will now take a Post‑Test! Before starting, note the following requirements:</p>
+    <p>You will now "play" SeaCraft again.</p>
 
     <p>
-        1. Launch the SeaCraft App from your desktop.<br>
+        1. Launch SeaCraft from your desktop.<br>
         2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
         3. When asked for an access code, use: <b>XYZ</b>
     </p>
 
-    <p><b>Important:</b> Ensure you enter the correct access code <b>XYZ</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
-    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this section within 15 minutes.</p>
+    <p><b>Important:</b> Again! Ensure you enter the correct access code <b>XYZ</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
+    <p>Again try to finish this phase within 15 minutes or sooner.</p>
     <p>
         If you experience any issues:<br>
         1. Verify you used the correct access code <b>XYZ</b>.<br>
@@ -372,7 +401,7 @@ html {
         3. If problems persist, alert a researcher.
     </p>
 
-    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
     <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true); stopTimer(); startTimer(5, 'surveyTimer');">Back</button>
     <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false); stopTimer(); startTimer(15,'alternativeTrainingTimer');">Next (8/10)</button>
 </section>
@@ -381,20 +410,21 @@ html {
 <!-- Section 9a: Alternative Training 1 (Blue) -->
 <section class="Alternative1" id="Alternative1">
     <p id="alternativeTrainingTimer"></p>
-    <p>You will now use a different training method: <b>BLUE</b> group, for 15 minutes.</p>
+    <p>You will now use a different way to learn to play SeaCraft: <b>BLUE</b> for 15 minutes.</p>
 
     <p>
-        1. Open the SeaCraft App from your desktop.<br>
+        1. Open SeaCraft from your desktop.<br>
         2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
         3. When asked for an access code, use: <b>AAA</b>
     </p>
 
     <p><b>Important:</b> Ensure you enter the correct access code <b>AAA</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
 
-    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+ <p>Try to finish this phase within 15 minutes or sooner.</p>
 
-    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this training within 15 minutes.</p>
+    <p>The video tutorial below is the same one from earlier and is provided here 
+    for convenience.</p>
+    <p>Again try to finish this phase within 15 minutes or sooner.</p>
 
     <p>
         If you experience any issues:<br>
@@ -403,7 +433,7 @@ html {
         3. If problems persist, alert a researcher.
     </p>
 
-    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
     <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');">Back</button>
     <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1'); stopTimer(); startTimer(5,'comparitiveTimer');">Next (9/10)</button>
 </section>
@@ -415,17 +445,18 @@ html {
     <p>You will now use a different training method: <b>YELLOW</b> group, for 15 minutes.</p>
 
     <p>
-        1. Open the SeaCraft App from your desktop.<br>
+        1. Open the SeaCraft from your desktop.<br>
         2. Enter your assigned case‑sensitive username/alias: <b><span class="username-display"></span></b><br>
         3. When asked for an access code, use: <b>BBB</b>
     </p>
 
     <p><b>Important:</b> Ensure you enter the correct access code <b>BBB</b> and username <b><span class="username-display"></span></b> when starting the application.</p>
 
-    <p>The <b>optional</b> tutorial below shows how to use this simulation.</p>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/GgH_UVyH-HA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+ <p>Try to finish this phase within 15 minutes or sooner.</p>
 
-    <p>A 15‑minute timer is assigned to this section (visible at the top). Please complete this training within 15 minutes.</p>
+    <p>The video tutorial below is the same one from earlier and is provided here 
+    for convenience.</p>
+    <p>Again try to finish this phase within 15 minutes or sooner.</p>
 
     <p>
         If you experience any issues:<br>
@@ -434,7 +465,7 @@ html {
         3. If problems persist, alert a researcher.
     </p>
 
-    <p>When completed, the app will display a completion screen. Click the exit button and return to this webpage.</p>
+    <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
     <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');">Back</button>
     <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Comparison2'); stopTimer(); startTimer(10,'comparitiveTimer');">Next (9/10)</button>
 </section>
@@ -447,41 +478,49 @@ html {
         <p>
             Compare the
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            <b>Yellow</b> (RAFT) <!-- Styling for 'yellow' (RAFT) -->
+            <b>Your group is Yellow</b>  <!-- Styling for 'yellow' (NACT) -->
         </span>
             and
             <span style="color: #1e88e5;">
-            <b>Blue</b> (NAT) <!-- Styling for 'blue' (NAT) -->
+            <b>Your group is  Blue</b>  <!-- Styling for 'blue' (TACT) -->
         </span>
-            learning alternatives using the survey embedded below.
+            learning to play SeaCraft alternatives using the survey embedded below.
         </p>
         <p></p>
         <p>
             Remember you started with
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            Yellow (RAFT)
+            Yellow 
         </span>
-            and now you are doing
+            and ended with
             <span style="color: #1e88e5;">
-            Blue (NAT)
+            Blue 
         </span>
         </p>
         <p></p>
         <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_bQ9FjwBlQc0ZL2S" style="border:0"></iframe> <!-- Embedded Qualtrics comparison survey -->
-        <p>When you are finished with this survey, you are done and can move on to our thanks!</p>
+        <p>When you are finished with this survey, you are done and can now click <i>Next</i></p>
         
         <!-- Confirmation checkbox for comparison survey 1 submission -->
-        <div class="form-check mt-2 mb-2">
-            <input class="form-check-input" type="checkbox" value="" id="comparison1FormSubmittedCheck">
-            <label class="form-check-label" for="comparison1FormSubmittedCheck">
-                I have submitted the survey.
-            </label>
-        </div>
-        <p id="comparison1ErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for comparison survey 1 confirmation -->
+        <div class="qualtrics-submit-reminder">
+            <p style="color: #d32f2f"> 
+                <strong>Before you continue:</strong>
+                please press the blue <em>Submit</em> button inside the survey
+                (it looks like the one below) before you click <q>Next</q> below.
+            </p>
+                
 
+            <!-- CSS-driven replica of the Qualtrics Submit button -->
+            <button
+                class="qualtrics-submit-btn"
+                aria-label="Example of the Qualtrics Submit button"
+                disabled>
+                &rarr;   <!-- right-arrow glyph -->
+            </button>
+        </div>
         <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');">Back</button> <!-- Button to go back -->
         <!-- Button to proceed, checks for survey submission -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison1FormSubmittedCheck', 'comparison1ErrorMsg', function() { stopTimer(); nextSection('Comparison1','Finish'); });">Next (10/10)</button>
+        <button type="button" class="btn btn-primary" onclick=" stopTimer(); nextSection('Comparison1','Finish');">Next (10/10)</button>
     </section>
    
     <!-- Section 10b: Comparison Page 2 -->
@@ -491,11 +530,11 @@ html {
         <p>
             Compare the
             <span style="color: #1e88e5;">
-            <b>blue</b> (NAT) <!-- Styling for 'blue' (NAT) -->
+            <b>blue</b> <!-- Styling for 'blue' (TACT) -->
         </span>
             and
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            <b>yellow</b> (adaptive) <!-- Styling for 'yellow' (adaptive) -->
+            <b>yellow</b>  <!-- Styling for 'yellow' (adaptive) -->
         </span>
             learning alternatives using the survey embedded below.
         </p>
@@ -503,35 +542,28 @@ html {
         <p>
             <b>Remember</b> you started with
             <span style="color: #1e88e5;">
-            Blue (NAT)
+            Blue 
         </span>
-            and now you are doing
+            and ended with
             <span style="color: #ffd700; background-color: #333; padding: 2px 4px; border-radius: 3px;">
-            Yellow (RAFT)
+            Yellow 
         </span>
         </p>
         <p></p>
         <iframe width="100%" height="1000px" src="https://unr.az1.qualtrics.com/jfe/form/SV_bQ9FjwBlQc0ZL2S" style="border:0"></iframe> <!-- Embedded Qualtrics comparison survey -->
         <p>When you are finished with this survey, you are done and can move on to our thanks!</p>
 
-        <!-- Confirmation checkbox for comparison survey 2 submission -->
-        <div class="form-check mt-2 mb-2">
-            <input class="form-check-input" type="checkbox" value="" id="comparison2FormSubmittedCheck">
-            <label class="form-check-label" for="comparison2FormSubmittedCheck">
-                I have submitted the survey.
-            </label>
-        </div>
-        <p id="comparison2ErrorMsg" style="color: red; display: none;">Please confirm you have submitted the survey by checking the box above.</p> <!-- Error message for comparison survey 2 confirmation -->
+                       &rarr;   <!-- right-arrow glyph -->
 
         <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');">Back</button> <!-- Button to go back -->
         <!-- Button to proceed, checks for survey submission -->
-        <button type="button" class="btn btn-primary" onclick="checkSubmissionAndProceed('comparison2FormSubmittedCheck', 'comparison2ErrorMsg', function() { stopTimer(); nextSection('Comparison2','Finish'); });">Next (10/10)</button>
+        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Comparison2','Finish'); ">Next (10/10)</button>
     </section>
 
 
     <!-- Final Section: Finish Page -->
     <section class="Finish" id="Finish"> <!-- 'Finish' section -->
-        <p>You are now finished with the experiment. <b>Thank you</b> for participating! You may now close this tab. </p>
+        <p>You are now finished with the experiment. <b>Thank you, Thank you </b> for participating! You may now close this tab. </p>
         <p>If your username is drawn in our random drawing, you will be emailed an Amazon gift card! </p>
         <a href="https://www.cse.unr.edu">Done</a> <!-- Link to an external page -->
     </section>
@@ -583,6 +615,30 @@ html {
         }
     }
 
-    
+    const sectionTitles = {
+    'Name': 'Name',
+    'Consent': 'Consent',
+    'Demographics': 'Demographics',
+    'Rules': 'Overview',
+    'Pretest': 'SeaCraft 1',
+    'Training1': 'Training 1',
+    'Usability': 'Survey',
+    'Posttest': 'SeaCraft 2',
+    'Training2': 'Training 2',
+    'Comparison1': 'Comparison',
+    'Comparison2': 'Comparison',
+    'Finish': 'Finish'
+};
+
+// Update heading when hash changes
+function updateHeadingFromHash() {
+    const sectionId = window.location.hash.substring(1);
+    const heading = document.getElementById('current-section-heading');
+    heading.textContent = sectionTitles[sectionId] || 'Name';
+}
+
+// Initial update and event listener
+window.addEventListener('load', updateHeadingFromHash);
+window.addEventListener('hashchange', updateHeadingFromHash);
 </script>
 </html>
