@@ -114,7 +114,7 @@ html {
 <!-- Main Content Container -->
 <div class ="box">
 
-    <h1 id="current-section-heading"></h1>
+    <h1 id="current-section-heading">Name</h1>
     <!-- Example colored boxes (likely for demonstration or specific UI elements) -->
     <div class="redbox" id="redbox">
         <p>You are in <q>Yellow</q> group.</p>
@@ -135,7 +135,7 @@ html {
         </div>
     </form> </p>
         <p><span class="invalid" id="invalid">Invalid username/alias.</span></p> <!-- Error message for invalid username -->
-        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent'); startTimer(3, 'consentTimer');"> Submit Name</button> <!-- Button to submit username -->
+        <button type="button" class="btn btn-primary" onclick="checkUser('username', 'invalid', 'Name', 'Consent'); startTimer(3, 'consentTimer');updateHeading('Consent')"> Submit Name</button> <!-- Button to submit username -->
     </section>
 <!-- End of Student Login Section -->
 
@@ -167,7 +167,7 @@ html {
             </button>
         </div>
         <!-- Button to proceed to the next section, checks for consent form submission -->
-        <button type="button" class="btn btn-primary" onclick=" stopTimer(); nextSection('Consent','Demographics'); startTimer(2, 'demographicsTimer'); "> Next (2/10)</button>
+        <button type="button" class="btn btn-primary" onclick=" stopTimer(); nextSection('Consent','Demographics'); startTimer(2, 'demographicsTimer');updateHeading('Demographics') "> Next (2/10)</button>
     </section>
 <!-- End of Consent Form Section -->
 
@@ -198,9 +198,9 @@ html {
         </div>
         <p id="demographicsErrorMsg" style="color: red; display: none;">Please confirm you have submitted the form by checking the box above.</p> <!-- Error message for demographics confirmation -->
 
-        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics', 'Consent', true); startTimer(3, 'consentTimer');">Back</button> <!-- Button to go back to the previous section -->
+        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics', 'Consent', true); startTimer(3, 'consentTimer');updateHeading('Consent')">Back</button> <!-- Button to go back to the previous section -->
         <!-- Button to proceed, checks for demographics form submission and starts a timer -->
-        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics','Rules'); startTimer(15, 'timer'); ">Next (3/10) </button>
+        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Demographics','Rules'); startTimer(15, 'timer'); updateHeading('Overview')">Next (3/10) </button>
     </section>
 <!-- End of Demographics Page Section -->
  
@@ -246,11 +246,11 @@ html {
     
         <!-- Navigation buttons -->
         <button type="button" class="btn btn-primary"
-                onclick="stopTimer(); nextSection('Rules','Demographics', true); startTimer(2, 'demographicsTimer');">
+                onclick="stopTimer(); nextSection('Rules','Demographics', true); startTimer(2, 'demographicsTimer');updateHeading('Demographics')">
             Back
         </button>
         <button type="button" class="btn btn-primary"
-                onclick="nextSection('Rules','Pretest'); stopTimer(); startTimer(15, 'Pretesttimer');">
+                onclick="nextSection('Rules','Pretest'); stopTimer(); startTimer(15, 'Pretesttimer'); updateHeading('SeaCraft 1')">
             Next&nbsp;(4/10)
         </button>
     </section>
@@ -279,8 +279,8 @@ html {
 
     <p>When completed, the SeaCraft will display a completion screen. <b>Click the exit button</b> and return to this webpage.</p>
 
-    <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); stopTimer(); startTimer(15, 'timer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false); stopTimer(); startTimer(15,'Trainingtimer');">Next (5/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Pretest','Rules', true); stopTimer(); startTimer(15, 'timer'); updateHeading('Overview')">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Pretest','Training1','Training2', false); stopTimer(); startTimer(15,'Trainingtimer'); updateHeading('Training1')">Next (5/10)</button>
 </section>
 <!-- End of Pre‑Test Page -->
 
@@ -313,8 +313,8 @@ html {
     </p>
 
     <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability'); stopTimer(); startTimer(5,'surveyTimer');">Next (6/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');updateHeading('SeaCraft 1')">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training1','Usability'); stopTimer(); startTimer(5,'surveyTimer');updateHeading('Survey')">Next (6/10)</button>
 </section>
 <!-- End of Training 1 -->
 
@@ -345,8 +345,8 @@ html {
     </p>
 
     <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability'); stopTimer(); startTimer(5,'surveyTimer');">Next (6/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Pretest', true); stopTimer(); startTimer(15, 'Pretesttimer');updateHeading('SeaCraft 1')">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Training2','Usability'); stopTimer(); startTimer(5,'surveyTimer');updateHeading('Survey')">Next (6/10)</button>
 </section>
 <!-- End of Training 2 -->
 
@@ -376,8 +376,8 @@ html {
             </button>
         </div>
 
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true); stopTimer(); startTimer(15, 'Trainingtimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick=" nextSection('Usability','Posttest'); stopTimer(); startTimer(15,'posttestTimer');">Next (7/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Usability','Training1','Training2', true); stopTimer(); startTimer(15, 'Trainingtimer');updateHeading('Training 1')">Back</button>
+    <button type="button" class="btn btn-primary" onclick=" nextSection('Usability','Posttest'); stopTimer(); startTimer(15,'posttestTimer');updateHeading('SeaCraft 2')">Next (7/10)</button>
 </section>
 <!-- End of Usability Survey -->
 
@@ -402,8 +402,8 @@ html {
     </p>
 
     <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true); stopTimer(); startTimer(5, 'surveyTimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false); stopTimer(); startTimer(15,'alternativeTrainingTimer');">Next (8/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Posttest','Usability', true); stopTimer(); startTimer(5, 'surveyTimer');updateHeading('Survey')">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextRandomSection('Posttest','Alternative1','Alternative2', false); stopTimer(); startTimer(15,'alternativeTrainingTimer');updateHeading('Training 2')">Next (8/10)</button>
 </section>
 <!-- End of Post‑Test -->
 
@@ -434,8 +434,8 @@ html {
     </p>
 
     <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1'); stopTimer(); startTimer(5,'comparitiveTimer');">Next (9/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');updateHeading('SeaCraft 2')">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative1','Comparison1'); stopTimer(); startTimer(5,'comparitiveTimer');updateHeading('Comparison')">Next (9/10)</button>
 </section>
 <!-- End of Alternative Training 1 -->
 
@@ -466,8 +466,8 @@ html {
     </p>
 
     <p>When completed, the SeaCraft will display a completion screen. Click the exit button and return to this webpage.</p>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');">Back</button>
-    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Comparison2'); stopTimer(); startTimer(10,'comparitiveTimer');">Next (9/10)</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Posttest', true); stopTimer(); startTimer(15, 'posttestTimer');updateHeading('SeaCraft 2')">Back</button>
+    <button type="button" class="btn btn-primary" onclick="nextSection('Alternative2','Comparison2'); stopTimer(); startTimer(10,'comparitiveTimer');updateHeading('Comparison')">Next (9/10)</button>
 </section>
 <!-- End of Alternative Training 2 -->
 
@@ -518,9 +518,9 @@ html {
                 &rarr;   <!-- right-arrow glyph -->
             </button>
         </div>
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');">Back</button> <!-- Button to go back -->
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison1','Alternative1', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');updateHeading('Training 2')">Back</button> <!-- Button to go back -->
         <!-- Button to proceed, checks for survey submission -->
-        <button type="button" class="btn btn-primary" onclick=" stopTimer(); nextSection('Comparison1','Finish');">Next (10/10)</button>
+        <button type="button" class="btn btn-primary" onclick=" stopTimer(); nextSection('Comparison1','Finish');updateHeading('Finish')">Next (10/10)</button>
     </section>
    
     <!-- Section 10b: Comparison Page 2 -->
@@ -555,9 +555,9 @@ html {
 
                        &rarr;   <!-- right-arrow glyph -->
 
-        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');">Back</button> <!-- Button to go back -->
+        <button type="button" class="btn btn-primary" onclick="nextSection('Comparison2','Alternative2', true); stopTimer(); startTimer(15, 'alternativeTrainingTimer');updateHeading('Training 2')">Back</button> <!-- Button to go back -->
         <!-- Button to proceed, checks for survey submission -->
-        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Comparison2','Finish'); ">Next (10/10)</button>
+        <button type="button" class="btn btn-primary" onclick="stopTimer(); nextSection('Comparison2','Finish'); updateHeading('Finish')">Next (10/10)</button>
     </section>
 
 
@@ -615,30 +615,12 @@ html {
         }
     }
 
-    const sectionTitles = {
-    'Name': 'Name',
-    'Consent': 'Consent',
-    'Demographics': 'Demographics',
-    'Rules': 'Overview',
-    'Pretest': 'SeaCraft 1',
-    'Training1': 'Training 1',
-    'Usability': 'Survey',
-    'Posttest': 'SeaCraft 2',
-    'Training2': 'Training 2',
-    'Comparison1': 'Comparison',
-    'Comparison2': 'Comparison',
-    'Finish': 'Finish'
-};
-
-// Update heading when hash changes
-function updateHeadingFromHash() {
-    const sectionId = window.location.hash.substring(1);
-    const heading = document.getElementById('current-section-heading');
-    heading.textContent = sectionTitles[sectionId] || 'Name';
-}
-
-// Initial update and event listener
-window.addEventListener('load', updateHeadingFromHash);
-window.addEventListener('hashchange', updateHeadingFromHash);
+    // Function to update the current section heading
+    function updateHeading(newHeadingText) {
+        const headingElement = document.getElementById('current-section-heading');
+        if (headingElement) {
+            headingElement.textContent = newHeadingText;
+        }
+    }
 </script>
 </html>
